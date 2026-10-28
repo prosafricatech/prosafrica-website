@@ -1,7 +1,19 @@
 {
   "name": "ronel",
   "version": "1.0.0",
+  "engines": {
+    "node": ">=22.5.0"
+  },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@fortawesome/fontawesome-svg-core": "^7.3.1",
+    "@fortawesome/free-brands-svg-icons": "^7.3.1",
+    "@fortawesome/free-solid-svg-icons": "^7.3.1",
+    "@fortawesome/react-fontawesome": "^3.5.0",
+    "@mui/icons-material": "^9.5.0",
+    "@mui/material": "^9.5.0",
+    "@mui/material-nextjs": "^9.5.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.4.1",
@@ -10,26 +22,31 @@
     "express-ejs-layouts": "^2.5.1",
     "express-fileupload": "^1.5.2",
     "express-session": "^1.19.0",
+    "next": "^16.0.0",
     "nodemailer": "^8.0.5",
     "nodemon": "^3.1.11",
     "npm-run-all": "^4.1.5",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@types/node": "26.6.5",
+    "@types/react": "19.3.0",
     "autoprefixer": "^10.4.0",
     "gulp": "^5.0.1",
     "gulp-concat": "^2.6.1",
     "node-sass-tilde-importer": "^1.0.2",
     "pixrem": "^5.0.0",
     "postcss": "^8.3.11",
-    "sass": "1.77.6"
+    "sass": "1.77.6",
+    "typescript": "7.0.2"
   },
   "scripts": {
-    "gulp": "gulp",
-    "build": "gulp build",
-    "dev": "npm-run-all gulp preview",
-    "preview": "nodemon app.js",
-    "rtl": "gulp rtl",
-    "rtl-build": "gulp rtlBuild"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "check:contrast": "node scripts/check-contrast.js",
+    "legacy:preview": "nodemon app.js"
   }
 }
