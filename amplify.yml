@@ -1,0 +1,54 @@
+# AWS Amplify Hosting build settings.
+#
+# Amplify generates a build spec on its own when the repository has none. This
+# file overrides that, so anything the build needs must be stated here — most
+# of all `baseDirectory: .next`, which is what marks the app as a Next.js
+# compute (SSR) deployment rather than a static one.
+#
+# Environment variables to set in the Amplify console (App settings →
+# Environment variables), not here:
+#
+#   MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD   SMTP for demo requests
+#   DATA_DIR=/tmp/prosafrica                             see the note below
+#
+# DATA_DIR matters more than it looks. The SSR function's own directory is
+# read-only; only /tmp is writable. Without the override, services/db.js fails
+# at mkdirSync and every demo request returns 503. With it, writes succeed but
+# the rows live only as long as that one invocation — see "Data and the
+# backend" in CLAUDE.md, and decision 12 in docs/product-evidence-register.md.
+
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        # node:sqlite needs Node 22.5+, and Amplify runs the SSR function on
+        # the same Node major version the build used. 24 also works.
+        - nvm use 22
+        - node --version
+        - npm ci
+    build:
+      commands:
+        # Console variables reach the build container but NOT the SSR runtime.
+        # Next.js reads .env.production, so the names the server needs are
+        # copied into it here. Only those names: a bare `env >>` would publish
+        # the entire build environment into the deployment artifact.
+        #
+        # `|| true` because grep exits 1 when nothing matches, which would
+        # otherwise fail the whole build on a missing optional variable.
+        - env | grep -e '^MAIL_' -e '^DATA_DIR=' >> .env.production || true
+        # Breaks the build if a theme edit broke a contrast rule.
+        - npm run check:contrast
+        - npm run build
+  artifacts:
+    # Must stay `.next` for a Next.js SSR app. Anything else and Amplify
+    # serves the site as static files and every route 404s.
+    baseDirectory: .next
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+      # Next's build cache. Remove this first if the build runs out of memory
+      # while Amplify compresses the cache.
+      - .next/cache/**/*
