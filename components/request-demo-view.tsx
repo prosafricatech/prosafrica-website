@@ -13,6 +13,23 @@ import { DemoRequestForm } from "./demo-request-form";
 import { SiteFooter, SiteHeader } from "./site-chrome";
 import { brand } from "./theme";
 
+// Deliberately no response time or meeting length: both are commitments
+// ProsAfrica has not confirmed (see docs/product-evidence-register.md).
+const nextSteps = [
+  {
+    title: "We read your request",
+    detail: "Someone from the ProsERP team goes through what you told us you want to manage better.",
+  },
+  {
+    title: "We get in touch to agree a time",
+    detail: "By phone or email, using the details you gave.",
+  },
+  {
+    title: "The walkthrough follows your work",
+    detail: "We show the modules you asked about, set against the way your operations run.",
+  },
+];
+
 export function RequestDemoView() {
   return (
     <>
@@ -80,6 +97,33 @@ export function RequestDemoView() {
                   </Typography>
                 </Stack>
               </Paper>
+              <Typography component="h2" sx={{ pt: 1 }} variant="h6">
+                What happens next
+              </Typography>
+              <Stack component="ol" spacing={1.5} sx={{ m: 0, p: 0 }}>
+                {nextSteps.map((step, index) => (
+                  <Stack component="li" direction="row" key={step.title} spacing={1.5}>
+                    <Typography
+                      aria-hidden="true"
+                      sx={{ color: brand.muted, flexShrink: 0, fontWeight: 700 }}
+                      variant="body2"
+                    >
+                      {String(index + 1).padStart(2, "0")}
+                    </Typography>
+                    <Box>
+                      <Typography component="h3" variant="subtitle2">
+                        {step.title}
+                      </Typography>
+                      <Typography sx={{ color: brand.muted }} variant="body2">
+                        {step.detail}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                ))}
+              </Stack>
+              <Typography sx={{ color: brand.muted }} variant="body2">
+                No obligation. We start by understanding how your business works.
+              </Typography>
             </Stack>
             <DemoRequestForm />
           </Box>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import CallMadeIcon from "@mui/icons-material/CallMade";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -1389,6 +1390,36 @@ const modules = [
 // The six adoption steps the live site publishes as "Our Work Flow", reworded
 // to describe mechanics rather than benefits. Nothing here claims a capability
 // sitting at tier C in docs/product-evidence-register.md.
+// The problems a visitor recognises before they care about modules. Each answer
+// restates a capability the module list already claims, so this section adds
+// framing, not new product claims.
+const operatingProblems = [
+  {
+    number: "01",
+    title: "Stock runs out before anyone notices",
+    detail: "Stores and the books drift apart between counts. ProsERP flags low stock before a store runs dry.",
+    href: "/industries/trading-distribution",
+  },
+  {
+    number: "02",
+    title: "Projects overspend quietly",
+    detail: "Spending shows up after the money is gone. ProsERP holds spend against budget on every project as it happens.",
+    href: "/industries/projects-construction",
+  },
+  {
+    number: "03",
+    title: "Approvals stall in chats and inboxes",
+    detail: "Nobody can say who approved what, or what is still waiting. ProsERP routes each request and keeps the decision visible.",
+    href: "/solutions/process-approval",
+  },
+  {
+    number: "04",
+    title: "Reports are rebuilt by hand",
+    detail: "Every month-end starts from spreadsheets. ProsERP reports from the same records the daily work is entered in.",
+    href: "/#platform",
+  },
+];
+
 const adoptionSteps = [
   {
     number: "01",
@@ -1512,6 +1543,22 @@ const clientLogos: readonly ClientLogo[] = [
   { name: "Brecol", src: "/images/BRECOL_LOGO_PIC.png" },
   { name: "Namis", src: "/images/namis.png" },
 ];
+
+export type Testimonial = {
+  name: string;
+  organization: string;
+  /** Where the signed approval of this exact wording is kept. Not rendered. */
+  permissionNote: string;
+  quote: string;
+  role: string;
+};
+
+// Customer testimonials. A quote attributed to a named person is the strongest
+// claim on the site, so each entry is their own words, approved in writing as
+// published — never a paraphrase or a draft written for them. See decision 1 in
+// docs/product-evidence-register.md. The section does not render while this is
+// empty, so it can ship before the first approval arrives.
+const testimonials: readonly Testimonial[] = [];
 
 export function HomeExperience({
   view = "home",
@@ -1701,6 +1748,33 @@ export function HomeExperience({
             </Stack>
           </Container>
         </Box>
+
+        <Container
+          aria-labelledby="problems-heading"
+          component="section"
+          id="problems"
+          maxWidth="lg"
+          sx={{ pt: { xs: 6, md: 9 } }}
+        >
+          <SectionHeading
+            eyebrow="Where it goes wrong"
+            intro="Most businesses do not lack data. They keep it in places that never get compared, so the gap between them is found late and paid for."
+            title="Your records disagree long before anyone notices."
+            titleId="problems-heading"
+          />
+          <CardGrid>
+            {operatingProblems.map((problem) => (
+              <NumberedCard
+                detail={problem.detail}
+                href={problem.href}
+                key={problem.number}
+                number={problem.number}
+                showArrow
+                title={problem.title}
+              />
+            ))}
+          </CardGrid>
+        </Container>
 
         <Container id="platform" maxWidth="lg" sx={{ py: { xs: 6, md: 9 } }}>
           <SectionHeading
@@ -2643,6 +2717,58 @@ export function HomeExperience({
             )}
           </Container>
         </Box>
+
+        {testimonials.length > 0 ? (
+          <Container
+            aria-labelledby="testimonials-heading"
+            component="section"
+            id="testimonials"
+            maxWidth="lg"
+            sx={{ py: { xs: 6, md: 9 } }}
+          >
+            <SectionHeading
+              eyebrow="In their words"
+              title="What the people running the numbers say."
+              titleId="testimonials-heading"
+            />
+            <CardGrid columns={3}>
+              {testimonials.map((testimonial) => (
+                <Paper
+                  component="figure"
+                  elevation={0}
+                  key={`${testimonial.organization}-${testimonial.name}`}
+                  sx={{
+                    border: `1px solid ${brand.line}`,
+                    borderRadius: 3,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 2,
+                    m: 0,
+                    p: 3,
+                  }}
+                  variant="outlined"
+                >
+                  <FormatQuoteIcon aria-hidden sx={{ color: brand.accent, fontSize: 36 }} />
+                  <Typography
+                    component="blockquote"
+                    sx={{ color: brand.ink, flexGrow: 1, m: 0 }}
+                    variant="body1"
+                  >
+                    {testimonial.quote}
+                  </Typography>
+                  <Box component="figcaption">
+                    <Typography sx={{ color: brand.ink, fontWeight: 700 }} variant="subtitle2">
+                      {testimonial.name}
+                    </Typography>
+                    <Typography sx={{ color: brand.muted }} variant="body2">
+                      {testimonial.role}, {testimonial.organization}
+                    </Typography>
+                  </Box>
+                </Paper>
+              ))}
+            </CardGrid>
+          </Container>
+        ) : null}
           </>
         ) : null}
 
@@ -2768,10 +2894,15 @@ export function HomeExperience({
                 <Typography sx={{ color: "rgba(255,255,255,0.8)" }} variant="body1">
                   Tell us how your business works. We will show you where ProsERP can help.
                 </Typography>
-                {/* Scrolls to the form below rather than leaving for /request-demo. */}
-                <PrimaryAction href="/#request-demo" tone="onDark">
-                  Request a demo
-                </PrimaryAction>
+                <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5}>
+                  {/* Scrolls to the form below rather than leaving for /request-demo. */}
+                  <PrimaryAction href="/#request-demo" tone="onDark">
+                    Request a demo
+                  </PrimaryAction>
+                  <TextLink href="/product-tour" light>
+                    Take the product tour
+                  </TextLink>
+                </Stack>
               </Stack>
             </Stack>
           </Container>

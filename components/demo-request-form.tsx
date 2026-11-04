@@ -149,6 +149,17 @@ export function DemoRequestForm() {
       <Typography sx={{ color: brand.muted, display: "block", mt: 1.5 }} variant="caption">
         Your information is only used to respond to this request.
       </Typography>
+      <Typography sx={{ color: brand.muted, display: "block", mt: 0.5 }} variant="caption">
+        Prefer to talk? Call{" "}
+        <Typography component="a" href="tel:+255746917817" sx={{ color: brand.primary }} variant="caption">
+          +255 746 917 817
+        </Typography>{" "}
+        or email{" "}
+        <Typography component="a" href="mailto:info@prosafrica.co.tz" sx={{ color: brand.primary }} variant="caption">
+          info@prosafrica.co.tz
+        </Typography>
+        .
+      </Typography>
     </Paper>
   );
 }
