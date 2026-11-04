@@ -21,6 +21,7 @@ import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
+import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -1686,6 +1687,8 @@ export type Testimonial = {
   permissionNote: string;
   quote: string;
   role: string;
+  /** Fictional design-preview entry; rendered with a SAMPLE label, never in production. */
+  sample?: boolean;
 };
 
 // Customer testimonials. A quote attributed to a named person is the strongest
@@ -1694,6 +1697,57 @@ export type Testimonial = {
 // docs/product-evidence-register.md. The section does not render while this is
 // empty, so it can ship before the first approval arrives.
 const testimonials: readonly Testimonial[] = [];
+
+// Design-preview entries, so the section can be seen and judged before real
+// quotes arrive. The people and companies are invented and say so: they are
+// never attributed to a real client, and they carry a visible SAMPLE label.
+// They show under `next dev`, or on a deployment that sets
+// NEXT_PUBLIC_SHOW_SAMPLE_TESTIMONIALS=true — keep that off for the public site.
+const sampleTestimonials: readonly Testimonial[] = [
+  {
+    name: "Sample Name A",
+    organization: "Sample Trading Co.",
+    permissionNote: "Fictional design preview",
+    quote:
+      "Month-end used to start with three spreadsheets that never agreed. Now stock, sales and the ledger come from the same records, and closing the month is a review, not a rebuild.",
+    role: "Chief Accountant",
+    sample: true,
+  },
+  {
+    name: "Sample Name B",
+    organization: "Sample Fuel Stations Ltd",
+    permissionNote: "Fictional design preview",
+    quote:
+      "I can follow every station's shifts and tank readings from my phone. When the dipping and the book stock disagree, I know which shift it was before anyone calls me.",
+    role: "Managing Director",
+    sample: true,
+  },
+  {
+    name: "Sample Name C",
+    organization: "Sample Construction Ltd",
+    permissionNote: "Fictional design preview",
+    quote:
+      "Every certificate waits for the right signature before it is paid, and the budget shows what is committed, not just what is spent.",
+    role: "Project Manager",
+    sample: true,
+  },
+];
+
+const showSampleTestimonials =
+  process.env.NODE_ENV === "development" ||
+  process.env.NEXT_PUBLIC_SHOW_SAMPLE_TESTIMONIALS === "true";
+
+const shownTestimonials =
+  testimonials.length > 0 ? testimonials : showSampleTestimonials ? sampleTestimonials : [];
+
+const initials = (name: string) =>
+  name
+    .split(" ")
+    .filter((part) => /^[A-Za-z]/.test(part))
+    .slice(-2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
 
 function isTourKey(value: string | null): value is TourKey {
   return value !== null && Object.prototype.hasOwnProperty.call(tourContent, value);
@@ -3021,7 +3075,7 @@ export function HomeExperience({
           </Container>
         </Box>
 
-        {testimonials.length > 0 ? (
+        {shownTestimonials.length > 0 ? (
           <Container
             aria-labelledby="testimonials-heading"
             component="section"
@@ -3035,7 +3089,7 @@ export function HomeExperience({
               titleId="testimonials-heading"
             />
             <CardGrid columns={3}>
-              {testimonials.map((testimonial) => (
+              {shownTestimonials.map((testimonial) => (
                 <Paper
                   component="figure"
                   elevation={0}
@@ -3051,7 +3105,16 @@ export function HomeExperience({
                   }}
                   variant="outlined"
                 >
-                  <FormatQuoteIcon aria-hidden sx={{ color: brand.accent, fontSize: 36 }} />
+                  <Stack direction="row" sx={{ alignItems: "flex-start", justifyContent: "space-between" }}>
+                    <FormatQuoteIcon aria-hidden sx={{ color: brand.accent, fontSize: 36 }} />
+                    {testimonial.sample ? (
+                      <Chip
+                        label="SAMPLE"
+                        size="small"
+                        sx={{ bgcolor: brand.tintMuted, color: brand.ink, fontWeight: 700 }}
+                      />
+                    ) : null}
+                  </Stack>
                   <Typography
                     component="blockquote"
                     sx={{ color: brand.ink, flexGrow: 1, m: 0 }}
@@ -3059,14 +3122,27 @@ export function HomeExperience({
                   >
                     {testimonial.quote}
                   </Typography>
-                  <Box component="figcaption">
-                    <Typography sx={{ color: brand.ink, fontWeight: 700 }} variant="subtitle2">
-                      {testimonial.name}
-                    </Typography>
-                    <Typography sx={{ color: brand.muted }} variant="body2">
-                      {testimonial.role}, {testimonial.organization}
-                    </Typography>
-                  </Box>
+                  <Stack
+                    component="figcaption"
+                    direction="row"
+                    spacing={1.5}
+                    sx={{ alignItems: "center", borderTop: `1px solid ${brand.line}`, pt: 2 }}
+                  >
+                    <Avatar
+                      aria-hidden
+                      sx={{ bgcolor: brand.primary, color: brand.white, fontWeight: 700, height: 44, width: 44 }}
+                    >
+                      {initials(testimonial.name)}
+                    </Avatar>
+                    <Box>
+                      <Typography sx={{ color: brand.ink, fontWeight: 700 }} variant="subtitle2">
+                        {testimonial.name}
+                      </Typography>
+                      <Typography sx={{ color: brand.muted }} variant="body2">
+                        {testimonial.role}, {testimonial.organization}
+                      </Typography>
+                    </Box>
+                  </Stack>
                 </Paper>
               ))}
             </CardGrid>
