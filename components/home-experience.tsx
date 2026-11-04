@@ -3,7 +3,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import CallMadeIcon from "@mui/icons-material/CallMade";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import CheckIcon from "@mui/icons-material/Check";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ConstructionIcon from "@mui/icons-material/Construction";
 import EngineeringIcon from "@mui/icons-material/Engineering";
@@ -26,12 +28,14 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
 import LinearProgress from "@mui/material/LinearProgress";
+import ListSubheader from "@mui/material/ListSubheader";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { Fragment, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Fragment, Suspense, useCallback, useEffect, useState } from "react";
 import {
   RecordDetail,
   ScreenCaption,
@@ -1574,6 +1578,17 @@ const audienceGroups = [
   },
 ];
 
+// The tour's module navigator, grouped as the header's Platform menu and the
+// homepage's module groups are. Change all three together.
+const tourGroups: readonly { icon: React.ReactNode; modules: readonly TourKey[]; title: string }[] = [
+  { icon: <AccountBalanceIcon />, modules: ["finance", "reporting", "asset-register"], title: "Money & control" },
+  { icon: <Inventory2Icon />, modules: ["procurement", "inventory", "sales"], title: "Buying, stock & selling" },
+  { icon: <EngineeringIcon />, modules: ["projects", "manufacturing", "fuel"], title: "Operations" },
+  { icon: <FactCheckIcon />, modules: ["process-approval", "human-resources"], title: "People & approvals" },
+];
+
+const tourOrder = tourGroups.flatMap((group) => group.modules);
+
 const tourDestinations: Record<TourKey, string> = {
   projects: "/industries/projects-construction",
   fuel: "/industries/fuel-stations",
@@ -1626,6 +1641,28 @@ export type Testimonial = {
 // docs/product-evidence-register.md. The section does not render while this is
 // empty, so it can ship before the first approval arrives.
 const testimonials: readonly Testimonial[] = [];
+
+function isTourKey(value: string | null): value is TourKey {
+  return value !== null && Object.prototype.hasOwnProperty.call(tourContent, value);
+}
+
+/**
+ * Opens the tour on `?module=<key>`, which is how the header's Platform menu
+ * links to a single module. Kept in its own component under Suspense so only
+ * this null-rendering piece waits for the URL, not the whole statically
+ * rendered page.
+ */
+function TourModuleSync({ onModule }: { onModule: (key: TourKey) => void }) {
+  const requested = useSearchParams().get("module");
+
+  useEffect(() => {
+    if (isTourKey(requested)) {
+      onModule(requested);
+    }
+  }, [onModule, requested]);
+
+  return null;
+}
 
 export function HomeExperience({
   view = "home",
@@ -1686,11 +1723,24 @@ export function HomeExperience({
     };
   }, []);
 
-  function chooseTour(key: TourKey) {
+  // Stable, because TourModuleSync re-runs whenever it changes.
+  const chooseTour = useCallback((key: TourKey) => {
     setActiveTour(key);
     setActiveStep(0);
     if (key === "projects") {
       setSelectedProjectTaskId(projectTourTaskIds[0]);
+    }
+  }, []);
+
+  /**
+   * A module picked by hand. Besides switching, it writes `?module=` into the
+   * address so the view can be shared or bookmarked; TourModuleSync reads the
+   * same value back, which is a no-op because the key has not changed.
+   */
+  function selectModule(key: TourKey) {
+    chooseTour(key);
+    if (view === "tour") {
+      window.history.replaceState(null, "", `/product-tour?module=${key}`);
     }
   }
 
@@ -2124,130 +2174,257 @@ export function HomeExperience({
 
         {view === "tour" ? (
         <Box component="section" sx={{ bgcolor: brand.surfaceDark, color: brand.white, py: { xs: 6, md: 9 } }}>
+          <Suspense fallback={null}>
+            <TourModuleSync onModule={chooseTour} />
+          </Suspense>
           <Container maxWidth="lg">
-            <Stack spacing={1} sx={{ mb: 4 }}>
-              <Eyebrow light>EXPLORE ALL 11 MODULES</Eyebrow>
-              <Typography component="h2" variant="h3">
+            <Stack spacing={1} sx={{ maxWidth: 720, mb: { xs: 3, md: 5 } }}>
+              <Eyebrow light>PRODUCT TOUR · 11 MODULES</Eyebrow>
+              <Typography component="h1" variant="h3">
                 See how the pieces come together.
               </Typography>
               <Typography sx={{ color: "rgba(255,255,255,0.8)" }} variant="body1">
-                Choose any module for a guided look at the workflows ProsERP supports.
+                Pick a module, then step through what it does. The screens are illustrative
+                samples, and they respond when you click them.
               </Typography>
             </Stack>
 
+            {/* Module picker on small screens: one grouped dropdown */}
+            <TextField
+              fullWidth
+              label="Module"
+              onChange={(event) => selectModule(event.target.value as TourKey)}
+              select
+              sx={{
+                display: { xs: "flex", md: "none" },
+                mb: 3,
+                "& .MuiInputBase-root": { bgcolor: brand.white },
+                "& .MuiInputLabel-root": { bgcolor: brand.white, borderRadius: 1, px: 0.5 },
+              }}
+              value={activeTour}
+            >
+              {tourGroups.flatMap((group) => [
+                <ListSubheader key={group.title}>{group.title}</ListSubheader>,
+                ...group.modules.map((key) => (
+                  <MenuItem key={key} value={key}>
+                    {tourContent[key].label}
+                  </MenuItem>
+                )),
+              ])}
+            </TextField>
+
             <Box
               sx={{
+                alignItems: "start",
                 display: "grid",
-                gap: 2,
-                gridTemplateColumns: { xs: "1fr", md: "220px 1fr" },
+                gap: { xs: 2, md: 4 },
+                gridTemplateColumns: { xs: "1fr", md: "220px minmax(0, 1fr)" },
               }}
             >
-              <Tabs
-                aria-label="Choose a workflow"
-                onChange={(_event, value) => chooseTour(value as TourKey)}
-                orientation="vertical"
-                sx={{
-                  bgcolor: "rgba(255,255,255,0.05)",
-                  borderRadius: 2,
-                  maxHeight: { md: 520 },
-                  "& .MuiTab-root": { alignItems: "flex-start", color: "rgba(255,255,255,0.7)", minHeight: 44, textAlign: "left" },
-                  "& .MuiTab-root.Mui-selected": { bgcolor: brand.tintAccent, color: brand.white },
-                }}
-                value={activeTour}
-                variant="scrollable"
-              >
-                {(Object.keys(tourContent) as TourKey[]).map((key, index) => (
-                  <Tab
-                    id={`tab-${key}`}
-                    key={key}
-                    label={`${String(index + 1).padStart(2, "0")}  ${tourContent[key].label}`}
-                    value={key}
-                  />
-                ))}
-              </Tabs>
-
+              {/* Module navigator on larger screens, grouped like the header menu */}
               <Box
-                aria-labelledby={`tab-${activeTour}`}
-                role="tabpanel"
-                sx={{
-                  display: "grid",
-                  gap: 3,
-                  gridTemplateColumns: { xs: "1fr", lg: "0.85fr 1.15fr" },
-                }}
+                aria-label="Choose a module"
+                component="nav"
+                sx={{ display: { xs: "none", md: "block" }, position: "sticky", top: 88 }}
               >
-                <Stack spacing={1.5}>
-                  <Stack direction="row" spacing={1} sx={{ justifyContent: "space-between" }}>
-                    <Typography sx={{ color: brand.accentLight, fontWeight: 700 }} variant="caption">
-                      {tour.eyebrow}
-                    </Typography>
-                    <Typography sx={{ color: "rgba(255,255,255,0.6)" }} variant="caption">
-                      {String(activeStep + 1).padStart(2, "0")} / {String(tour.steps.length).padStart(2, "0")}
-                    </Typography>
-                  </Stack>
-                  {/*
-                    The module's own headline and summary. Without these the
-                    left column changed only its small eyebrow when you picked
-                    a different module, so what each one is *for* never got said.
-                  */}
-                  <Typography component="h3" variant="h5">
-                    {tour.title}
-                  </Typography>
-                  <Typography sx={{ color: "rgba(255,255,255,0.75)" }} variant="body2">
-                    {tour.description}
-                  </Typography>
-                  <Box
-                    aria-hidden="true"
-                    sx={{ bgcolor: brand.accentLight, height: 2, mt: 0.5, width: 40 }}
-                  />
-                  <Typography component="h4" sx={{ fontWeight: 700, mt: 0.5 }} variant="subtitle1">
-                    {step.title}
-                  </Typography>
-                  <Typography sx={{ color: "rgba(255,255,255,0.8)" }} variant="body1">
-                    {step.text}
-                  </Typography>
-                  <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
-                    <IconButton
-                      aria-label="Previous step"
-                      onClick={() => moveStep(-1)}
-                      sx={{ border: "1px solid rgba(255,255,255,0.25)", color: brand.white }}
-                      size="small"
-                    >
-                      ←
-                    </IconButton>
-                    <IconButton
-                      aria-label="Next step"
-                      onClick={() => moveStep(1)}
-                      sx={{ border: "1px solid rgba(255,255,255,0.25)", color: brand.white }}
-                      size="small"
-                    >
-                      →
-                    </IconButton>
+                {tourGroups.map((group) => (
+                  <Box key={group.title} sx={{ mb: 2.5 }}>
                     <Stack
-                      aria-label={`Step ${activeStep + 1} of ${tour.steps.length}`}
                       direction="row"
-                      spacing={0.5}
-                      sx={{ ml: 1 }}
+                      spacing={1}
+                      sx={{ alignItems: "center", color: brand.accentLight, mb: 0.75, "& svg": { fontSize: 18 } }}
                     >
-                      {tour.steps.map((item, index) => (
-                        <Box
-                          key={item.title}
-                          sx={{
-                            bgcolor: index <= activeStep ? brand.accent : "rgba(255,255,255,0.25)",
-                            borderRadius: 1,
-                            height: 4,
-                            width: 22,
-                          }}
-                        />
-                      ))}
+                      {group.icon}
+                      <Typography sx={{ fontWeight: 700 }} variant="caption">
+                        {group.title.toUpperCase()}
+                      </Typography>
                     </Stack>
-                  </Stack>
-                  <Stack spacing={0.5} sx={{ alignItems: "flex-start" }}>
+                    <Stack spacing={0.25}>
+                      {group.modules.map((key) => {
+                        const selected = key === activeTour;
+                        return (
+                          <Button
+                            aria-current={selected ? "true" : undefined}
+                            key={key}
+                            onClick={() => selectModule(key)}
+                            sx={{
+                              bgcolor: selected ? "rgba(255,255,255,0.1)" : "transparent",
+                              borderLeft: `3px solid ${selected ? brand.accent : "transparent"}`,
+                              borderRadius: "0 8px 8px 0",
+                              color: selected ? brand.white : "rgba(255,255,255,0.75)",
+                              fontWeight: selected ? 700 : 500,
+                              justifyContent: "flex-start",
+                              px: 1.5,
+                              py: 0.75,
+                              textTransform: "none",
+                              transition: "none",
+                              "&:hover": { bgcolor: "rgba(255,255,255,0.08)" },
+                            }}
+                          >
+                            {tourContent[key].label}
+                          </Button>
+                        );
+                      })}
+                    </Stack>
+                  </Box>
+                ))}
+              </Box>
+
+              <Box sx={{ minWidth: 0 }}>
+                {/* What this module is for */}
+                <Stack
+                  direction={{ xs: "column", sm: "row" }}
+                  spacing={2}
+                  sx={{ alignItems: { sm: "flex-start" }, justifyContent: "space-between", mb: 3 }}
+                >
+                  <Box sx={{ maxWidth: 640 }}>
+                    <Typography sx={{ color: brand.accentLight, fontWeight: 700 }} variant="caption">
+                      {tour.eyebrow.toUpperCase()}
+                    </Typography>
+                    <Typography component="h2" sx={{ mb: 1, mt: 0.5 }} variant="h4">
+                      {tour.title}
+                    </Typography>
+                    <Typography sx={{ color: "rgba(255,255,255,0.8)" }} variant="body1">
+                      {tour.description}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ flexShrink: 0 }}>
                     <TextLink href={tourDestinations[activeTour]} light>
-                      Explore {tour.label.toLowerCase()}
+                      More on {tour.label.toLowerCase()}
                     </TextLink>
-                    <TextLink href="/#request-demo" light>
-                      Talk to our team
-                    </TextLink>
+                  </Box>
+                </Stack>
+
+                {/* The module's steps, each one clickable */}
+                <Box
+                  aria-label={`${tour.label} steps`}
+                  role="tablist"
+                  sx={{
+                    display: "grid",
+                    gap: 1,
+                    gridTemplateColumns: { xs: "1fr 1fr", lg: `repeat(${tour.steps.length}, 1fr)` },
+                    mb: 1.5,
+                  }}
+                >
+                  {tour.steps.map((item, index) => {
+                    const current = index === activeStep;
+                    const done = index < activeStep;
+                    return (
+                      <Box
+                        aria-selected={current}
+                        component="button"
+                        key={item.title}
+                        onClick={() => selectTourStep(index)}
+                        role="tab"
+                        sx={{
+                          alignItems: "flex-start",
+                          bgcolor: current ? brand.white : "rgba(255,255,255,0.06)",
+                          border: `1px solid ${current ? brand.white : "rgba(255,255,255,0.14)"}`,
+                          borderRadius: 2,
+                          color: current ? brand.ink : brand.white,
+                          cursor: "pointer",
+                          display: "flex",
+                          font: "inherit",
+                          gap: 1.25,
+                          p: 1.5,
+                          textAlign: "left",
+                          transition: "background-color 160ms",
+                          "&:hover": { bgcolor: current ? brand.white : "rgba(255,255,255,0.12)" },
+                          "&:focus-visible": { outline: `2px solid ${brand.accentLight}`, outlineOffset: 2 },
+                        }}
+                        type="button"
+                      >
+                        <Box
+                          aria-hidden="true"
+                          sx={{
+                            alignItems: "center",
+                            bgcolor: current ? brand.primary : done ? brand.accent : "transparent",
+                            border: current || done ? "none" : "1px solid rgba(255,255,255,0.4)",
+                            borderRadius: "50%",
+                            color: brand.white,
+                            display: "flex",
+                            flexShrink: 0,
+                            fontSize: "0.75rem",
+                            fontWeight: 700,
+                            height: 26,
+                            justifyContent: "center",
+                            width: 26,
+                          }}
+                        >
+                          {done ? <CheckIcon sx={{ fontSize: 16 }} /> : index + 1}
+                        </Box>
+                        <Box>
+                          <Typography component="span" sx={{ display: "block", fontWeight: 700, lineHeight: 1.3 }} variant="body2">
+                            {item.title}
+                          </Typography>
+                          <Typography
+                            component="span"
+                            sx={{ color: current ? brand.muted : "rgba(255,255,255,0.65)" }}
+                            variant="caption"
+                          >
+                            {item.tag}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    );
+                  })}
+                </Box>
+
+                {/* The selected step, with a way forward */}
+                <Stack
+                  direction={{ xs: "column", md: "row" }}
+                  role="tabpanel"
+                  spacing={2}
+                  sx={{
+                    alignItems: { md: "center" },
+                    bgcolor: "rgba(255,255,255,0.06)",
+                    borderRadius: 2,
+                    mb: 2,
+                    p: 2,
+                  }}
+                >
+                  <Box sx={{ flexGrow: 1 }}>
+                    <Typography component="h3" variant="subtitle1">
+                      {step.title}
+                    </Typography>
+                    <Typography sx={{ color: "rgba(255,255,255,0.8)" }} variant="body2">
+                      {step.text}
+                    </Typography>
+                  </Box>
+                  <Stack direction="row" spacing={1} sx={{ flexShrink: 0 }}>
+                    <Button
+                      disabled={activeStep === 0}
+                      onClick={() => moveStep(-1)}
+                      startIcon={<ArrowBackIcon />}
+                      sx={{
+                        color: brand.white,
+                        textTransform: "none",
+                        "&.Mui-disabled": { color: "rgba(255,255,255,0.35)" },
+                      }}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      endIcon={<ArrowForwardIcon />}
+                      onClick={() =>
+                        activeStep < tour.steps.length - 1
+                          ? moveStep(1)
+                          : selectModule(tourOrder[(tourOrder.indexOf(activeTour) + 1) % tourOrder.length])
+                      }
+                      sx={{
+                        bgcolor: brand.white,
+                        color: brand.primary,
+                        fontWeight: 700,
+                        textTransform: "none",
+                        whiteSpace: "nowrap",
+                        "&:hover": { bgcolor: brand.paper },
+                      }}
+                      variant="contained"
+                    >
+                      {activeStep < tour.steps.length - 1
+                        ? "Next step"
+                        : `Next: ${tourContent[tourOrder[(tourOrder.indexOf(activeTour) + 1) % tourOrder.length]].label}`}
+                    </Button>
                   </Stack>
                 </Stack>
 
@@ -2629,76 +2806,71 @@ export function HomeExperience({
                     ) : activeTour === "human-resources" ? (
                       <PayrollPreview />
                     ) : (
-                      <Box sx={{ display: "grid", gap: 1.5, gridTemplateColumns: { xs: "1fr", sm: "1.2fr 0.8fr" } }}>
-                        <Stack spacing={0.5}>
+                      <Box>
+                        {/*
+                          One tile per step, carrying that step's headline
+                          figure. The step rail above already names the steps,
+                          so this reads as the screen's summary row instead of
+                          repeating the list.
+                        */}
+                        <Box
+                          sx={{
+                            display: "grid",
+                            gap: 1,
+                            gridTemplateColumns: { xs: "1fr 1fr", sm: `repeat(${tour.steps.length}, 1fr)` },
+                          }}
+                        >
                           {tour.steps.map((item, index) => (
-                            <Button
-                              aria-current={activeStep === index ? "step" : undefined}
+                            <Box
+                              aria-pressed={activeStep === index}
+                              component="button"
                               key={item.title}
                               onClick={() => selectTourStep(index)}
                               sx={{
                                 bgcolor: activeStep === index ? brand.tintAccent : brand.paper,
+                                border: `1px solid ${activeStep === index ? brand.accent : brand.line}`,
+                                borderRadius: 2,
                                 color: brand.ink,
-                                justifyContent: "flex-start",
-                                p: 1,
+                                cursor: "pointer",
+                                font: "inherit",
+                                p: 1.5,
                                 textAlign: "left",
-                                textTransform: "none",
                               }}
+                              type="button"
                             >
-                              <Box
-                                sx={{
-                                  alignItems: "center",
-                                  bgcolor: index < activeStep ? brand.accent : brand.white,
-                                  border: `1px solid ${brand.line}`,
-                                  borderRadius: "50%",
-                                  display: "flex",
-                                  flexShrink: 0,
-                                  fontSize: "0.6875rem",
-                                  fontWeight: 700,
-                                  height: 24,
-                                  justifyContent: "center",
-                                  mr: 1,
-                                  width: 24,
-                                }}
-                              >
-                                {index < activeStep ? "✓" : `0${index + 1}`}
-                              </Box>
-                              <Box>
-                                <Typography component="strong" sx={{ display: "block" }} variant="body2">
-                                  {item.title}
-                                </Typography>
-                                <Typography sx={{ color: brand.muted }} variant="caption">
-                                  {item.tag}
-                                </Typography>
-                              </Box>
-                            </Button>
+                              <Typography sx={{ color: brand.muted, display: "block" }} variant="caption">
+                                {item.tag}
+                              </Typography>
+                              <Typography component="strong" sx={{ display: "block" }} variant="h6">
+                                {item.metric}
+                              </Typography>
+                              <Typography sx={{ color: brand.muted }} variant="caption">
+                                {item.metricLabel}
+                              </Typography>
+                            </Box>
                           ))}
-                        </Stack>
+                        </Box>
                         <Paper
                           elevation={0}
-                          sx={{ bgcolor: brand.paper, border: `1px solid ${brand.line}`, borderRadius: 2, p: 1.5 }}
+                          sx={{ border: `1px solid ${brand.line}`, borderRadius: 2, mt: 1.5, p: 1.5 }}
                           variant="outlined"
                         >
-                          <Typography sx={{ color: brand.muted, display: "block" }} variant="caption">
-                            {step.tag}
-                          </Typography>
-                          <Typography component="strong" sx={{ display: "block" }} variant="h5">
-                            {step.metric}
-                          </Typography>
-                          <Typography sx={{ color: brand.muted }} variant="caption">
-                            {step.metricLabel}
-                          </Typography>
-                          <Stack direction="row" spacing={0.5} sx={{ alignItems: "flex-end", height: 40, my: 1 }}>
-                            {[40, 62, 48, 75, 58, 88, 70].map((height, index) => (
+                          <Stack direction="row" sx={{ color: brand.muted, justifyContent: "space-between", mb: 1 }}>
+                            <Typography variant="caption">{step.tag} · activity</Typography>
+                            <Typography variant="caption">Sample view</Typography>
+                          </Stack>
+                          <Stack direction="row" spacing={0.75} sx={{ alignItems: "flex-end", height: 96 }}>
+                            {[40, 62, 48, 75, 58, 88, 70, 64, 80, 55, 92, 76].map((height, index) => (
                               <Box
                                 key={index}
-                                sx={{ bgcolor: brand.primary, borderRadius: 0.5, flexGrow: 1, height: `${height}%` }}
+                                sx={{
+                                  bgcolor: index === 10 ? brand.accent : brand.primary,
+                                  borderRadius: "3px 3px 0 0",
+                                  flexGrow: 1,
+                                  height: `${height}%`,
+                                }}
                               />
                             ))}
-                          </Stack>
-                          <Stack direction="row" sx={{ color: brand.muted, justifyContent: "space-between" }}>
-                            <Typography variant="caption">Activity</Typography>
-                            <Typography variant="caption">Sample view</Typography>
                           </Stack>
                         </Paper>
                       </Box>
@@ -2721,49 +2893,42 @@ export function HomeExperience({
                       </Stack>
                     </Box>
                   </Paper>
-
-                  <Stack
-                    direction="row"
-                    spacing={1.5}
-                    sx={{
-                      alignItems: "center",
-                      bgcolor: "rgba(255,255,255,0.06)",
-                      border: "1px solid rgba(255,255,255,0.12)",
-                      borderRadius: 2,
-                      p: 1.5,
-                    }}
-                  >
-                    <CallMadeIcon fontSize="small" sx={{ color: brand.accentLight }} />
-                    <Box>
-                      <Typography component="strong" sx={{ display: "block" }} variant="body2">
-                        Connected by design
-                      </Typography>
-                      <Typography sx={{ color: "rgba(255,255,255,0.7)" }} variant="caption">
-                        Follow activity across teams
-                      </Typography>
-                    </Box>
-                  </Stack>
+                  <Typography sx={{ color: "rgba(255,255,255,0.6)" }} variant="caption">
+                    Illustrative preview. Product screens and sample figures are for demonstration
+                    only.
+                  </Typography>
                 </Stack>
               </Box>
             </Box>
 
-            <Typography sx={{ color: "rgba(255,255,255,0.6)", display: "block", mt: 2 }} variant="caption">
-              This is an illustrative preview. Product screens and sample figures are for
-              demonstration only.
-            </Typography>
-
-            <Stack
-              direction={{ xs: "column", sm: "row" }}
-              spacing={2}
-              sx={{ alignItems: { sm: "center" }, justifyContent: "space-between", mt: 4 }}
+            <Paper
+              elevation={0}
+              sx={{
+                alignItems: { sm: "center" },
+                bgcolor: "rgba(255,255,255,0.06)",
+                border: "1px solid rgba(255,255,255,0.14)",
+                borderRadius: 3,
+                color: brand.white,
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                gap: 2,
+                justifyContent: "space-between",
+                mt: { xs: 4, md: 6 },
+                p: { xs: 2.5, md: 3 },
+              }}
             >
-              <Typography sx={{ color: "rgba(255,255,255,0.8)" }} variant="body1">
-                Want to see how these workflows fit your organization?
-              </Typography>
+              <Box>
+                <Typography component="h2" variant="h6">
+                  Want to see {tour.label.toLowerCase()} on your own numbers?
+                </Typography>
+                <Typography sx={{ color: "rgba(255,255,255,0.8)" }} variant="body2">
+                  We will walk you through it around the way your business runs.
+                </Typography>
+              </Box>
               <PrimaryAction href="/#request-demo" tone="onDark">
                 Request a demo
               </PrimaryAction>
-            </Stack>
+            </Paper>
           </Container>
         </Box>
         ) : null}

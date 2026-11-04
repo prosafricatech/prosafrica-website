@@ -8,11 +8,23 @@
 
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ConstructionIcon from "@mui/icons-material/Construction";
 import EmailIcon from "@mui/icons-material/Email";
+import EngineeringIcon from "@mui/icons-material/Engineering";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import FactCheckIcon from "@mui/icons-material/FactCheck";
+import FactoryIcon from "@mui/icons-material/Factory";
+import Inventory2Icon from "@mui/icons-material/Inventory2";
+import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import PhoneIcon from "@mui/icons-material/Phone";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Collapse from "@mui/material/Collapse";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
@@ -29,24 +41,165 @@ import { useState } from "react";
 
 import { brand } from "./theme";
 
-// Four links and the demo button. "Our clients" and "Who it's for" stay in the
-// footer: the clients strip sits directly under the hero, and a crowded bar
-// made every link harder to find.
-const navLinks = [
-  { href: "/#platform", label: "Platform" },
-  { href: "/#industries", label: "Industries" },
+// The header's menus. Platform and Industries open a panel, Odoo-style, so the
+// whole product is visible from any page; each module links to its own tab of
+// the product tour (`?module=` is read by TourModuleSync in home-experience).
+// The groups match the homepage's module groups — change both together.
+const platformMenu = [
+  {
+    icon: <AccountBalanceIcon fontSize="small" />,
+    title: "Money & control",
+    items: [
+      { detail: "Transactions, budgets and reconciliations", label: "Finance", module: "finance" },
+      { detail: "Operational and financial views", label: "Reporting", module: "reporting" },
+      { detail: "Assets, locations, status and value", label: "Asset Register", module: "asset-register" },
+    ],
+  },
+  {
+    icon: <Inventory2Icon fontSize="small" />,
+    title: "Buying, stock & selling",
+    items: [
+      { detail: "Purchase orders and goods received", label: "Procurement", module: "procurement" },
+      { detail: "Stock movement and low-stock alerts", label: "Inventory", module: "inventory" },
+      { detail: "Counters, outlets and proformas", label: "Sales & POS", module: "sales" },
+    ],
+  },
+  {
+    icon: <EngineeringIcon fontSize="small" />,
+    title: "Operations",
+    items: [
+      { detail: "Execution, budget and certificates", label: "Projects", module: "projects" },
+      { detail: "Bills of materials and batches", label: "Manufacturing", module: "manufacturing" },
+      { detail: "Shifts, dippings and fuel stock", label: "Fuel stations", module: "fuel" },
+    ],
+  },
+  {
+    icon: <FactCheckIcon fontSize="small" />,
+    title: "People & approvals",
+    items: [
+      { detail: "Route and review business requests", label: "Process approval", module: "process-approval" },
+      { detail: "Leave, loans and payroll approval", label: "Human resources", module: "human-resources" },
+    ],
+  },
+] as const;
+
+const industryMenu = [
+  {
+    detail: "Budgets, claims, stores and execution",
+    href: "/industries/projects-construction",
+    icon: <ConstructionIcon fontSize="small" />,
+    label: "Projects & construction",
+  },
+  {
+    detail: "Shifts, tank readings and station reports",
+    href: "/industries/fuel-stations",
+    icon: <LocalGasStationIcon fontSize="small" />,
+    label: "Fuel stations",
+  },
+  {
+    detail: "Materials, batches, output and costing",
+    href: "/industries/manufacturing",
+    icon: <FactoryIcon fontSize="small" />,
+    label: "Manufacturing",
+  },
+  {
+    detail: "Purchasing, inventory and sales",
+    href: "/industries/trading-distribution",
+    icon: <LocalShippingIcon fontSize="small" />,
+    label: "Trading & distribution",
+  },
+] as const;
+
+const plainLinks = [
   { href: "/product-tour", label: "Product tour" },
   { href: "/about", label: "About" },
 ] as const;
 
+type MenuKey = "platform" | "industries";
+
+const menuLabels: Record<MenuKey, string> = { platform: "Platform", industries: "Industries" };
+
+const tourHref = (module: string) => `/product-tour?module=${module}`;
+
+/** One link in a dropdown panel: label over a one-line description. */
+function MenuLink({
+  detail,
+  href,
+  icon,
+  label,
+  onClick,
+}: {
+  detail: string;
+  href: string;
+  icon?: React.ReactNode;
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <Box
+      component={Link}
+      href={href}
+      onClick={onClick}
+      sx={{
+        borderRadius: 2,
+        color: brand.ink,
+        display: "flex",
+        gap: 1.5,
+        mx: -1.5,
+        px: 1.5,
+        py: 1,
+        textDecoration: "none",
+        "&:hover, &:focus-visible": { bgcolor: brand.tintAccent },
+      }}
+    >
+      {icon ? (
+        <Box
+          aria-hidden="true"
+          sx={{
+            alignItems: "center",
+            bgcolor: brand.tintAccent,
+            borderRadius: 1.5,
+            color: brand.primary,
+            display: "flex",
+            flexShrink: 0,
+            height: 36,
+            justifyContent: "center",
+            width: 36,
+          }}
+        >
+          {icon}
+        </Box>
+      ) : null}
+      <Box>
+        <Typography sx={{ fontWeight: 600 }} variant="body2">
+          {label}
+        </Typography>
+        <Typography sx={{ color: brand.muted, fontSize: "0.8125rem", lineHeight: 1.4 }} variant="body2">
+          {detail}
+        </Typography>
+      </Box>
+    </Box>
+  );
+}
+
 export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const close = () => setMenuOpen(false);
+  const [openPanel, setOpenPanel] = useState<MenuKey | null>(null);
+  const [drawerSection, setDrawerSection] = useState<MenuKey | null>(null);
+  const close = () => {
+    setMenuOpen(false);
+    setOpenPanel(null);
+  };
+  const togglePanel = (key: MenuKey) => setOpenPanel(openPanel === key ? null : key);
 
   return (
+    <ClickAwayListener onClickAway={() => setOpenPanel(null)}>
     <AppBar
       color="transparent"
       elevation={0}
+      onKeyDown={(event) => {
+        if (event.key === "Escape") setOpenPanel(null);
+      }}
       position="sticky"
       sx={{ bgcolor: brand.white, borderBottom: `1px solid ${brand.line}` }}
     >
@@ -63,11 +216,32 @@ export function SiteHeader() {
             spacing={0.5}
             sx={{ alignItems: "center", display: { xs: "none", md: "flex" } }}
           >
-            {navLinks.map((link) => (
+            {(Object.keys(menuLabels) as MenuKey[]).map((key) => (
+              <Button
+                aria-controls={`menu-${key}`}
+                aria-expanded={openPanel === key}
+                endIcon={
+                  <ExpandMoreIcon
+                    sx={{ transform: openPanel === key ? "rotate(180deg)" : "none", transition: "transform 160ms" }}
+                  />
+                }
+                key={key}
+                onClick={() => togglePanel(key)}
+                sx={{
+                  color: openPanel === key ? brand.primary : brand.ink,
+                  fontWeight: 600,
+                  textTransform: "none",
+                }}
+              >
+                {menuLabels[key]}
+              </Button>
+            ))}
+            {plainLinks.map((link) => (
               <Button
                 component={Link}
                 href={link.href}
                 key={link.href}
+                onClick={close}
                 sx={{ color: brand.ink, fontWeight: 600, textTransform: "none" }}
               >
                 {link.label}
@@ -76,6 +250,7 @@ export function SiteHeader() {
             <Button
               component={Link}
               href="/#request-demo"
+              onClick={close}
               sx={{
                 bgcolor: brand.primary,
                 color: brand.white,
@@ -105,14 +280,148 @@ export function SiteHeader() {
         </Toolbar>
       </Container>
 
+      {/* Desktop dropdown panels, full width under the bar */}
+      <Collapse
+        in={openPanel !== null}
+        sx={{
+          bgcolor: brand.white,
+          borderTop: openPanel ? `1px solid ${brand.line}` : "none",
+          boxShadow: openPanel ? `0 24px 48px ${brand.tintPrimary}` : "none",
+          display: { xs: "none", md: "block" },
+          left: 0,
+          position: "absolute",
+          right: 0,
+          top: "100%",
+        }}
+        unmountOnExit
+      >
+        <Container id={`menu-${openPanel}`} maxWidth="lg" sx={{ py: 4 }}>
+          {openPanel === "platform" ? (
+            <>
+              <Box sx={{ display: "grid", gap: 4, gridTemplateColumns: "repeat(4, 1fr)" }}>
+                {platformMenu.map((group) => (
+                  <Box key={group.title}>
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      sx={{
+                        alignItems: "center",
+                        borderBottom: `2px solid ${brand.accent}`,
+                        color: brand.primary,
+                        mb: 1.5,
+                        pb: 1,
+                      }}
+                    >
+                      {group.icon}
+                      <Typography sx={{ fontWeight: 700 }} variant="subtitle2">
+                        {group.title}
+                      </Typography>
+                    </Stack>
+                    <Stack spacing={0.25}>
+                      {group.items.map((item) => (
+                        <MenuLink
+                          detail={item.detail}
+                          href={tourHref(item.module)}
+                          key={item.module}
+                          label={item.label}
+                          onClick={close}
+                        />
+                      ))}
+                    </Stack>
+                  </Box>
+                ))}
+              </Box>
+              <Divider sx={{ my: 3 }} />
+              <Stack direction="row" spacing={4}>
+                <MenuFooterLink href="/#platform" onClick={close}>
+                  How the modules connect
+                </MenuFooterLink>
+                <MenuFooterLink href="/product-tour" onClick={close}>
+                  Take the full product tour
+                </MenuFooterLink>
+              </Stack>
+            </>
+          ) : null}
+          {openPanel === "industries" ? (
+            <>
+              <Box sx={{ display: "grid", gap: 2, gridTemplateColumns: "repeat(4, 1fr)" }}>
+                {industryMenu.map((industry) => (
+                  <MenuLink
+                    detail={industry.detail}
+                    href={industry.href}
+                    icon={industry.icon}
+                    key={industry.href}
+                    label={industry.label}
+                    onClick={close}
+                  />
+                ))}
+              </Box>
+              <Divider sx={{ my: 3 }} />
+              <Stack direction="row" spacing={4}>
+                <MenuFooterLink href="/#industries" onClick={close}>
+                  All industries
+                </MenuFooterLink>
+                <MenuFooterLink href="/solutions/process-approval" onClick={close}>
+                  Process approval across every industry
+                </MenuFooterLink>
+              </Stack>
+            </>
+          ) : null}
+        </Container>
+      </Collapse>
+
       <Drawer anchor="right" onClose={close} open={menuOpen}>
-        <Box sx={{ width: 260 }}>
+        <Box sx={{ width: 300 }}>
           <Typography sx={{ color: brand.muted, px: 2, py: 1.5 }} variant="caption">
             Menu
           </Typography>
           <Divider />
           <List component="nav">
-            {navLinks.map((link) => (
+            {(Object.keys(menuLabels) as MenuKey[]).map((key) => (
+              <Box key={key}>
+                <ListItemButton
+                  aria-expanded={drawerSection === key}
+                  onClick={() => setDrawerSection(drawerSection === key ? null : key)}
+                >
+                  <ListItemText primary={menuLabels[key]} />
+                  <ExpandMoreIcon
+                    sx={{ transform: drawerSection === key ? "rotate(180deg)" : "none", transition: "transform 160ms" }}
+                  />
+                </ListItemButton>
+                <Collapse in={drawerSection === key} unmountOnExit>
+                  <Box sx={{ bgcolor: brand.paper, px: 3, py: 1.5 }}>
+                    {key === "platform"
+                      ? platformMenu.map((group) => (
+                          <Box key={group.title} sx={{ mb: 1.5 }}>
+                            <Typography sx={{ color: brand.muted, fontWeight: 700 }} variant="caption">
+                              {group.title.toUpperCase()}
+                            </Typography>
+                            {group.items.map((item) => (
+                              <MenuLink
+                                detail={item.detail}
+                                href={tourHref(item.module)}
+                                key={item.module}
+                                label={item.label}
+                                onClick={close}
+                              />
+                            ))}
+                          </Box>
+                        ))
+                      : industryMenu.map((industry) => (
+                          <MenuLink
+                            detail={industry.detail}
+                            href={industry.href}
+                            icon={industry.icon}
+                            key={industry.href}
+                            label={industry.label}
+                            onClick={close}
+                          />
+                        ))}
+                  </Box>
+                </Collapse>
+              </Box>
+            ))}
+            {plainLinks.map((link) => (
               <ListItemButton component={Link} href={link.href} key={link.href} onClick={close}>
                 <ListItemText primary={link.label} />
               </ListItemButton>
@@ -140,6 +449,30 @@ export function SiteHeader() {
         </Box>
       </Drawer>
     </AppBar>
+    </ClickAwayListener>
+  );
+}
+
+/** Arrow link along the bottom edge of a dropdown panel. */
+function MenuFooterLink({
+  children,
+  href,
+  onClick,
+}: {
+  children: React.ReactNode;
+  href: string;
+  onClick: () => void;
+}) {
+  return (
+    <Button
+      component={Link}
+      endIcon={<ArrowForwardIcon />}
+      href={href}
+      onClick={onClick}
+      sx={{ color: brand.primary, fontWeight: 600, ml: -1, textTransform: "none" }}
+    >
+      {children}
+    </Button>
   );
 }
 

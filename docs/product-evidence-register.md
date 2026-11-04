@@ -185,6 +185,14 @@ Every replacement is documented in §2.2 and §2.3. The headline claim is untouc
 
 Per the plan, review each with product and sales owners before deepening; do not publish industry features that have not been confirmed.
 
+**Workflow diagram, added 4 November 2026.** Each page now draws its four-step `flow` as a diagram
+([`components/workflow-diagram.tsx`](../components/workflow-diagram.tsx)), with a one-line `detail`
+per step taken from the page's existing capability copy, which the diagram replaced. No step
+introduces a capability the page did not already state, so the tier stays **C**. The previews in
+each card are shapes only and the diagram is captioned "Illustrative". Its closing band ("Every step
+lands in the same ledger and reports") restates the homepage's adoption steps 02–03 and stands or
+falls with them.
+
 ## 6. Process Approval page
 
 [`app/solutions/process-approval/page.tsx`](../app/solutions/process-approval/page.tsx) carries the clearest disclaimers on the site — "Illustrative details only. Actual fields vary by request type." ([`:214`](../app/solutions/process-approval/page.tsx#L214)) and "Illustrative interface · not live business records" ([`:220`](../app/solutions/process-approval/page.tsx#L220)). Tier **B**. Extend only when approval configuration and lifecycle behaviour are verified.

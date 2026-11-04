@@ -14,13 +14,13 @@ const industryPages = {
     summary: "Project execution",
     measure: "65.7%",
     measureLabel: "Illustrative execution progress",
-    capabilities: [
-      ["Plan the work", "Organize budgets, work breakdown and deliverables around each project."],
-      ["Manage commitments", "Follow subcontractors and claims alongside project activity."],
-      ["Connect site stores", "Review requisitions and consumption in the context of project execution."],
-      ["See project status", "Bring progress and project financial information into one view."],
-    ],
     flow: ["Project plan", "Budget & WBS", "Claims & stores", "Execution view"],
+    steps: [
+      { icon: "plan", title: "Project plan", detail: "Deliverables and work breakdown set up for each project.", visual: "timeline" },
+      { icon: "tree", title: "Budget & WBS", detail: "A budget held against every task in the breakdown.", visual: "bars" },
+      { icon: "stores", title: "Claims & stores", detail: "Subcontractor claims and site requisitions recorded against the project.", visual: "list" },
+      { icon: "insights", title: "Execution view", detail: "Progress and project finances read together.", visual: "progress" },
+    ],
     related: [
       ["Process approval", "Keep project-related requests and review decisions within a visible workflow."],
       ["Procurement", "Link project requirements to purchasing workflows."],
@@ -39,13 +39,13 @@ const industryPages = {
     summary: "Station network",
     measure: "07",
     measureLabel: "Locations in the demo",
-    capabilities: [
-      ["Compare locations", "Select a station and focus on its operational activity."],
-      ["Review sales shifts", "See shift dates, teams and status for each station."],
-      ["Check tank readings", "Explore dipping records and the shifts associated with them."],
-      ["Review operations", "Use dipping, tank stock and shift reports to understand activity."],
-    ],
     flow: ["Station", "Sales shift", "Tank dipping", "Operations report"],
+    steps: [
+      { icon: "station", title: "Station", detail: "Pick a station from the network and focus on it.", visual: "locations" },
+      { icon: "shift", title: "Sales shift", detail: "Shift dates, teams and status for the station.", visual: "list" },
+      { icon: "tank", title: "Tank dipping", detail: "Dipping records tied to the shift they were taken in.", visual: "tank" },
+      { icon: "report", title: "Operations report", detail: "Dipping, tank stock and shift reports.", visual: "bars" },
+    ],
     related: [
       ["Process approval", "Support review steps around operational requests and business decisions."],
       ["Finance", "Connect operating activity to financial visibility and reporting."],
@@ -64,13 +64,13 @@ const industryPages = {
     summary: "Production workflow",
     measure: "BOM",
     measureLabel: "Product recipe",
-    capabilities: [
-      ["Define products", "Use bills of materials to describe finished products and their inputs."],
-      ["Organize work centers", "Review production activity by its selected work center."],
-      ["Follow production batches", "Check batch dates and status without starting or changing production."],
-      ["Review output and cost", "Choose output or cost reporting for a selected period and product."],
-    ],
     flow: ["Bill of materials", "Work center", "Production batch", "Output & cost"],
+    steps: [
+      { icon: "recipe", title: "Bill of materials", detail: "The inputs that make up each finished product.", visual: "tree" },
+      { icon: "factory", title: "Work center", detail: "Production organised by the work center doing it.", visual: "locations" },
+      { icon: "batch", title: "Production batch", detail: "Batch dates and status followed through.", visual: "list" },
+      { icon: "report", title: "Output & cost", detail: "Output or cost reported by period and product.", visual: "bars" },
+    ],
     related: [
       ["Process approval", "Keep business requests connected to review and approval activity."],
       ["Procurement", "Connect purchasing and supplier processes to material needs."],
@@ -89,13 +89,13 @@ const industryPages = {
     summary: "Connected operations",
     measure: "04",
     measureLabel: "Connected work areas",
-    capabilities: [
-      ["Raise purchase orders", "Issue orders to suppliers and keep each one against the supplier it went to."],
-      ["Follow purchase orders", "See purchase status and receiving progress in the purchasing workflow."],
-      ["Manage inventory locations", "Review stores and consumption records for operational context."],
-      ["Track outlet sales", "Explore sales counters, outlets and point-of-sale reporting."],
-    ],
     flow: ["Purchase order", "Goods receipt", "Store & stock", "Outlet sales"],
+    steps: [
+      { icon: "order", title: "Purchase order", detail: "Orders issued and kept against the supplier.", visual: "list" },
+      { icon: "receipt", title: "Goods receipt", detail: "Receiving recorded against the order it fills.", visual: "progress" },
+      { icon: "warehouse", title: "Store & stock", detail: "Stock and consumption by store.", visual: "tank" },
+      { icon: "pos", title: "Outlet sales", detail: "Sales by counter and outlet.", visual: "bars" },
+    ],
     related: [
       ["Process approval", "Make review and decision steps visible around business requests."],
       ["Procurement", "Connect purchase orders, goods received and purchasing reports."],

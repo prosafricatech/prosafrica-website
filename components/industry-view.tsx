@@ -15,10 +15,10 @@ import Link from "next/link";
 
 import { SiteFooter, SiteHeader } from "./site-chrome";
 import { brand } from "./theme";
+import { WorkflowDiagram, type WorkflowStep } from "./workflow-diagram";
 
 export type IndustryContent = {
   accent: string;
-  capabilities: readonly (readonly [string, string])[];
   description: string;
   eyebrow: string;
   flow: readonly string[];
@@ -26,6 +26,7 @@ export type IndustryContent = {
   measureLabel: string;
   name: string;
   related: readonly (readonly [string, string])[];
+  steps: readonly WorkflowStep[];
   summary: string;
   title: string;
 };
@@ -187,57 +188,7 @@ export function IndustryView({ industry }: { industry: IndustryContent }) {
           </Container>
         </Box>
 
-        {/* Workflow capabilities */}
-        <Container id="workflow" maxWidth="lg" sx={{ py: { xs: 6, md: 9 } }}>
-          <Box
-            sx={{
-              display: "grid",
-              gap: 3,
-              gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-              mb: 4,
-            }}
-          >
-            <Box>
-              <Typography sx={{ color: brand.muted, fontWeight: 700 }} variant="caption">
-                A CONNECTED WORKFLOW
-              </Typography>
-              <Typography component="h2" variant="h4">
-                From daily activity to a clearer picture.
-              </Typography>
-            </Box>
-            <Typography sx={{ color: brand.muted }} variant="body1">
-              Explore how the work moves through the system. Teams can follow each stage while
-              related operations and financial information stay within reach.
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              display: "grid",
-              gap: 2,
-              gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr", lg: "repeat(4, 1fr)" },
-            }}
-          >
-            {industry.capabilities.map(([title, description], index) => (
-              <Paper
-                component="article"
-                elevation={0}
-                key={title}
-                sx={{ border: `1px solid ${brand.line}`, borderRadius: 3, p: 2.5 }}
-                variant="outlined"
-              >
-                <Typography sx={{ color: brand.muted, fontWeight: 700 }} variant="caption">
-                  {String(index + 1).padStart(2, "0")}
-                </Typography>
-                <Typography component="h3" sx={{ mb: 0.75, mt: 0.5 }} variant="subtitle1">
-                  {title}
-                </Typography>
-                <Typography sx={{ color: brand.muted }} variant="body2">
-                  {description}
-                </Typography>
-              </Paper>
-            ))}
-          </Box>
-        </Container>
+        <WorkflowDiagram name={industry.name} steps={industry.steps} />
 
         {/* Connections */}
         <Box sx={{ bgcolor: brand.surfaceDark, color: brand.white, py: { xs: 6, md: 9 } }}>
