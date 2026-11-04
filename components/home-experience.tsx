@@ -2,9 +2,19 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import CallMadeIcon from "@mui/icons-material/CallMade";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ConstructionIcon from "@mui/icons-material/Construction";
+import EngineeringIcon from "@mui/icons-material/Engineering";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import FactCheckIcon from "@mui/icons-material/FactCheck";
+import FactoryIcon from "@mui/icons-material/Factory";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
+import Inventory2Icon from "@mui/icons-material/Inventory2";
+import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -1395,28 +1405,57 @@ const modules = [
 // framing, not new product claims.
 const operatingProblems = [
   {
-    number: "01",
     title: "Stock runs out before anyone notices",
-    detail: "Stores and the books drift apart between counts. ProsERP flags low stock before a store runs dry.",
+    problem: "Stores and the books drift apart between counts.",
+    answer: "Low stock is flagged before a store runs dry.",
     href: "/industries/trading-distribution",
+    linkLabel: "Inventory & stores",
   },
   {
-    number: "02",
     title: "Projects overspend quietly",
-    detail: "Spending shows up after the money is gone. ProsERP holds spend against budget on every project as it happens.",
+    problem: "Spending shows up after the money is gone.",
+    answer: "Spend is held against budget on every project as it happens.",
     href: "/industries/projects-construction",
+    linkLabel: "Project management",
   },
   {
-    number: "03",
     title: "Approvals stall in chats and inboxes",
-    detail: "Nobody can say who approved what, or what is still waiting. ProsERP routes each request and keeps the decision visible.",
+    problem: "Nobody can say who approved what, or what is still waiting.",
+    answer: "Each request is routed for review and the decision stays visible.",
     href: "/solutions/process-approval",
+    linkLabel: "Process approval",
   },
   {
-    number: "04",
     title: "Reports are rebuilt by hand",
-    detail: "Every month-end starts from spreadsheets. ProsERP reports from the same records the daily work is entered in.",
+    problem: "Every month-end starts from spreadsheets.",
+    answer: "Reports read the same records the daily work is entered in.",
     href: "/#platform",
+    linkLabel: "Reporting",
+  },
+];
+
+// The eleven modules grouped by the job they do, so a visitor finds their own
+// area at a glance instead of reading eleven equal cards.
+const moduleGroups = [
+  {
+    icon: <AccountBalanceIcon />,
+    title: "Money & control",
+    modules: ["Financial management", "Reporting", "Asset Register"],
+  },
+  {
+    icon: <Inventory2Icon />,
+    title: "Buying, stock & selling",
+    modules: ["Procurement", "Inventory & stores", "Point of sale"],
+  },
+  {
+    icon: <EngineeringIcon />,
+    title: "Operations",
+    modules: ["Project management", "Manufacturing", "Fuel stations"],
+  },
+  {
+    icon: <FactCheckIcon />,
+    title: "People & approvals",
+    modules: ["Process approval", "Human resources"],
   },
 ];
 
@@ -1461,25 +1500,25 @@ const adoptionSteps = [
 
 const industryLinks = [
   {
-    number: "01",
+    icon: <ConstructionIcon />,
     title: "Projects & construction",
     detail: "Connect budgets, claims, subcontractors, stores and execution.",
     href: "/industries/projects-construction",
   },
   {
-    number: "02",
+    icon: <LocalGasStationIcon />,
     title: "Fuel stations",
     detail: "Follow shifts, tank readings, fuel movement and station reports.",
     href: "/industries/fuel-stations",
   },
   {
-    number: "03",
+    icon: <FactoryIcon />,
     title: "Manufacturing",
     detail: "Bring materials, production batches, output and costing together.",
     href: "/industries/manufacturing",
   },
   {
-    number: "04",
+    icon: <LocalShippingIcon />,
     title: "Trading & distribution",
     detail: "Coordinate purchasing, inventory, sales and financial visibility.",
     href: "/industries/trading-distribution",
@@ -1731,73 +1770,219 @@ export function HomeExperience({
           </Container>
         </Box>
 
-        <Box sx={{ bgcolor: brand.paper, borderBlock: `1px solid ${brand.line}`, py: 3 }}>
+        {/*
+          The grid shows only logos with written permission recorded against
+          them. With none cleared yet, the section falls back to the unnamed
+          formulation docs/product-evidence-register.md recommends: it makes no
+          identifiable customer claim, and it keeps #clients-heading alive for
+          the header and footer links that point at it.
+        */}
+        <Box
+          aria-labelledby="clients-heading"
+          component="section"
+          sx={{ bgcolor: brand.paper, borderBlock: `1px solid ${brand.line}`, py: { xs: 4, md: 5 } }}
+        >
           <Container maxWidth="lg">
-            <Stack
-              direction={{ xs: "column", md: "row" }}
-              spacing={2}
-              sx={{ alignItems: { md: "center" }, justifyContent: "space-between" }}
+            <Typography
+              component="h2"
+              id="clients-heading"
+              sx={{ color: brand.muted, fontWeight: 700, mb: 3, textAlign: "center" }}
+              variant="caption"
             >
-              <Box>
-                <Eyebrow>THE BIG PICTURE</Eyebrow>
-                <Typography sx={{ mt: 0.5 }} variant="h6">
-                  Less switching between systems. More understanding of how work connects.
-                </Typography>
-              </Box>
-              <TextLink href="#platform">See the platform</TextLink>
-            </Stack>
+              TRUSTED BY BUSINESSES IN TANZANIA
+            </Typography>
+            {clientLogos.length === 0 ? (
+              <Typography
+                sx={{ color: brand.muted, mx: "auto", maxWidth: 620, textAlign: "center" }}
+                variant="body1"
+              >
+                Used by construction, fuel, trading and manufacturing businesses in Tanzania.
+              </Typography>
+            ) : (
+            <Box
+              sx={{
+                alignItems: "center",
+                display: "grid",
+                gap: 2,
+                gridTemplateColumns: {
+                  xs: "repeat(3, 1fr)",
+                  md: "repeat(4, 1fr)",
+                  lg: "repeat(6, 1fr)",
+                },
+              }}
+            >
+              {clientLogos.map((client) => (
+                <Paper
+                  elevation={0}
+                  key={client.src}
+                  sx={{
+                    alignItems: "center",
+                    bgcolor: brand.white,
+                    border: `1px solid ${brand.line}`,
+                    borderRadius: 2,
+                    display: "flex",
+                    height: { xs: 64, md: 84 },
+                    justifyContent: "center",
+                    p: { xs: 1, md: 1.5 },
+                  }}
+                  variant="outlined"
+                >
+                  <Image
+                    alt={client.name}
+                    height={100}
+                    src={client.src}
+                    style={{ height: "auto", maxHeight: "100%", maxWidth: "100%", objectFit: "contain", width: "auto" }}
+                    width={200}
+                  />
+                </Paper>
+              ))}
+            </Box>
+            )}
           </Container>
         </Box>
 
-        <Container
+        <Box
           aria-labelledby="problems-heading"
           component="section"
           id="problems"
-          maxWidth="lg"
-          sx={{ pt: { xs: 6, md: 9 } }}
+          sx={{ bgcolor: brand.white, py: { xs: 6, md: 9 } }}
         >
-          <SectionHeading
-            eyebrow="Where it goes wrong"
-            intro="Most businesses do not lack data. They keep it in places that never get compared, so the gap between them is found late and paid for."
-            title="Your records disagree long before anyone notices."
-            titleId="problems-heading"
-          />
-          <CardGrid>
-            {operatingProblems.map((problem) => (
-              <NumberedCard
-                detail={problem.detail}
-                href={problem.href}
-                key={problem.number}
-                number={problem.number}
-                showArrow
-                title={problem.title}
-              />
-            ))}
-          </CardGrid>
-        </Container>
+          <Container maxWidth="lg">
+            <SectionHeading
+              eyebrow="Sound familiar?"
+              intro="Most businesses do not lack data. They keep it in places that never get compared, so the gap between them is found late and paid for."
+              title="Your records disagree long before anyone notices."
+              titleId="problems-heading"
+            />
+            <CardGrid columns={2}>
+              {operatingProblems.map((item) => (
+                <Paper
+                  component="article"
+                  elevation={0}
+                  key={item.title}
+                  sx={{
+                    border: `1px solid ${brand.line}`,
+                    borderRadius: 3,
+                    display: "flex",
+                    flexDirection: "column",
+                    overflow: "hidden",
+                  }}
+                  variant="outlined"
+                >
+                  <Stack direction="row" spacing={1.5} sx={{ p: 2.5 }}>
+                    <ReportProblemOutlinedIcon aria-hidden sx={{ color: brand.error, mt: 0.25 }} />
+                    <Box>
+                      <Typography component="h3" variant="subtitle1">
+                        {item.title}
+                      </Typography>
+                      <Typography sx={{ color: brand.muted }} variant="body2">
+                        {item.problem}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                  <Stack
+                    direction="row"
+                    spacing={1.5}
+                    sx={{
+                      bgcolor: brand.paper,
+                      borderTop: `1px solid ${brand.line}`,
+                      flexGrow: 1,
+                      p: 2.5,
+                    }}
+                  >
+                    <CheckCircleIcon aria-hidden sx={{ color: brand.success, mt: 0.25 }} />
+                    <Box>
+                      <Typography sx={{ color: brand.ink, fontWeight: 600 }} variant="body2">
+                        With ProsERP
+                      </Typography>
+                      <Typography sx={{ color: brand.ink }} variant="body2">
+                        {item.answer}
+                      </Typography>
+                      <Box sx={{ ml: -1, mt: 0.5 }}>
+                        <TextLink href={item.href}>{item.linkLabel}</TextLink>
+                      </Box>
+                    </Box>
+                  </Stack>
+                </Paper>
+              ))}
+            </CardGrid>
+          </Container>
+        </Box>
 
-        <Container id="platform" maxWidth="lg" sx={{ py: { xs: 6, md: 9 } }}>
+        <Box
+          aria-labelledby="platform-heading"
+          component="section"
+          id="platform"
+          sx={{ bgcolor: brand.paper, py: { xs: 6, md: 9 }, scrollMarginTop: 72 }}
+        >
+        <Container maxWidth="lg">
           <SectionHeading
             eyebrow="One platform, connected work"
             intro="Because the work and the money are recorded in the same system, ProsERP can hold one against the other. A purchase sits against the order it came from, consumption against the project that used it, a certificate against the approval that released it."
             title="Eleven modules, one set of numbers."
+            titleId="platform-heading"
           />
           <CardGrid>
-            {modules.map((module) => (
-              <NumberedCard
-                detail={module.detail}
-                id={module.title === "Process approval" ? "process-approval" : undefined}
-                key={module.number}
-                number={module.number}
-                showArrow
-                title={module.title}
-              />
+            {moduleGroups.map((group) => (
+              <Paper
+                component="article"
+                elevation={0}
+                key={group.title}
+                sx={{
+                  bgcolor: brand.white,
+                  border: `1px solid ${brand.line}`,
+                  borderRadius: 3,
+                  height: "100%",
+                  p: 2.5,
+                }}
+                variant="outlined"
+              >
+                <Stack direction="row" spacing={1.5} sx={{ alignItems: "center", mb: 2 }}>
+                  <Box
+                    aria-hidden="true"
+                    sx={{
+                      alignItems: "center",
+                      bgcolor: brand.primary,
+                      borderRadius: 2,
+                      color: brand.white,
+                      display: "flex",
+                      height: 40,
+                      justifyContent: "center",
+                      width: 40,
+                    }}
+                  >
+                    {group.icon}
+                  </Box>
+                  <Typography component="h3" variant="subtitle1">
+                    {group.title}
+                  </Typography>
+                </Stack>
+                <Stack spacing={1.75}>
+                  {group.modules.map((moduleTitle) => {
+                    const listed = modules.find((entry) => entry.title === moduleTitle);
+                    return listed ? (
+                      <Box
+                        id={listed.title === "Process approval" ? "process-approval" : undefined}
+                        key={listed.title}
+                        sx={{ borderLeft: `2px solid ${brand.accent}`, pl: 1.5 }}
+                      >
+                        <Typography sx={{ fontWeight: 600 }} variant="body2">
+                          {listed.title}
+                        </Typography>
+                        <Typography sx={{ color: brand.muted }} variant="body2">
+                          {listed.detail}
+                        </Typography>
+                      </Box>
+                    ) : null;
+                  })}
+                </Stack>
+              </Paper>
             ))}
           </CardGrid>
           <Paper
             elevation={0}
             sx={{
-              bgcolor: brand.paper,
+              bgcolor: brand.white,
               border: `1px solid ${brand.line}`,
               borderRadius: 3,
               mt: 3,
@@ -1835,36 +2020,15 @@ export function HomeExperience({
               </Box>
               <Stack spacing={0.5} sx={{ flexShrink: 0 }}>
                 <TextLink href="/solutions/process-approval">Explore approvals</TextLink>
-                <TextLink href="/product-tour">See guided tour</TextLink>
               </Stack>
             </Stack>
           </Paper>
+          <Stack sx={{ alignItems: "center", mt: 4 }}>
+            <PrimaryAction href="/product-tour">See every module in the product tour</PrimaryAction>
+          </Stack>
         </Container>
+        </Box>
           </>
-        ) : null}
-
-        {view === "home" ? (
-          <Box sx={{ bgcolor: brand.paper, py: { xs: 4, md: 6 } }}>
-            <Container maxWidth="lg">
-              <Stack
-                direction={{ xs: "column", md: "row" }}
-                spacing={2}
-                sx={{ alignItems: { md: "center" }, justifyContent: "space-between" }}
-              >
-                <Box>
-                  <Eyebrow>A GUIDED LOOK INSIDE</Eyebrow>
-                  <Typography component="h2" sx={{ mt: 0.5 }} variant="h5">
-                    Explore the ProsERP modules.
-                  </Typography>
-                  <Typography sx={{ color: brand.muted, mt: 0.5 }} variant="body2">
-                    Take a closer look at the workflows behind finance, projects, procurement and
-                    more.
-                  </Typography>
-                </Box>
-                <PrimaryAction href="/product-tour">Explore the product tour</PrimaryAction>
-              </Stack>
-            </Container>
-          </Box>
         ) : null}
 
         {view === "tour" ? (
@@ -2515,25 +2679,33 @@ export function HomeExperience({
 
         {view === "home" ? (
           <>
-        <Container id="industries" maxWidth="lg" sx={{ py: { xs: 6, md: 9 } }}>
+        <Box
+          aria-labelledby="industries-heading"
+          component="section"
+          id="industries"
+          sx={{ bgcolor: brand.white, py: { xs: 6, md: 9 }, scrollMarginTop: 72 }}
+        >
+        <Container maxWidth="lg">
           <SectionHeading
             eyebrow="Made for complex operations"
             intro="Different industries have different rhythms. A connected ERP should make the important work easier to follow."
             title="Built around how your business works."
+            titleId="industries-heading"
           />
           <CardGrid>
             {industryLinks.map((industry) => (
               <NumberedCard
                 detail={industry.detail}
                 href={industry.href}
-                key={industry.number}
-                number={industry.number}
+                icon={industry.icon}
+                key={industry.href}
                 showArrow
                 title={industry.title}
               />
             ))}
           </CardGrid>
         </Container>
+        </Box>
 
         <Box
           aria-labelledby="adoption-heading"
@@ -2599,125 +2771,6 @@ export function HomeExperience({
           </Container>
         </Box>
 
-        <Box
-          aria-labelledby="faqs-heading"
-          component="section"
-          id="faqs"
-          sx={{ bgcolor: brand.white, py: { xs: 6, md: 9 } }}
-        >
-          <Container maxWidth="lg">
-            <Stack spacing={1} sx={{ alignItems: "center", mb: 4, textAlign: "center" }}>
-              <Eyebrow>FAQS</Eyebrow>
-              <Box aria-hidden="true" sx={{ bgcolor: brand.accent, height: 2, width: 50 }} />
-              <Typography component="h2" id="faqs-heading" sx={{ mt: 1 }} variant="h4">
-                Frequently asked questions
-              </Typography>
-            </Stack>
-            <Box sx={{ mx: "auto", maxWidth: 760 }}>
-              <Box>
-                <Typography sx={{ color: brand.muted, mb: 1.5 }} variant="body2">
-                  People also ask:
-                </Typography>
-                {faqs.map((faq) => (
-                  <Accordion
-                    disableGutters
-                    elevation={0}
-                    key={faq.question}
-                    sx={{
-                      border: `1px solid ${brand.line}`,
-                      mb: 1,
-                      "&::before": { display: "none" },
-                    }}
-                  >
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                      <Typography sx={{ fontWeight: 600 }} variant="body1">
-                        {faq.question}
-                      </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Typography sx={{ color: brand.muted }} variant="body2">
-                        {faq.answer}
-                      </Typography>
-                    </AccordionDetails>
-                  </Accordion>
-                ))}
-              </Box>
-            </Box>
-          </Container>
-        </Box>
-
-        {/*
-          The grid shows only logos with written permission recorded against
-          them. With none cleared yet, the section falls back to the unnamed
-          formulation docs/product-evidence-register.md recommends: it makes no
-          identifiable customer claim, and it keeps #clients-heading alive for
-          the header and footer links that point at it.
-        */}
-        <Box
-          aria-labelledby="clients-heading"
-          component="section"
-          sx={{ bgcolor: brand.paper, py: { xs: 5, md: 7 } }}
-        >
-          <Container maxWidth="lg">
-            <Typography
-              component="h2"
-              id="clients-heading"
-              sx={{ color: brand.muted, fontWeight: 700, mb: 3, textAlign: "center" }}
-              variant="caption"
-            >
-              OUR CLIENTS
-            </Typography>
-            {clientLogos.length === 0 ? (
-              <Typography
-                sx={{ color: brand.muted, mx: "auto", maxWidth: 620, textAlign: "center" }}
-                variant="body1"
-              >
-                Used by construction, fuel, trading and manufacturing businesses in Tanzania.
-              </Typography>
-            ) : (
-            <Box
-              sx={{
-                alignItems: "center",
-                display: "grid",
-                gap: 2,
-                gridTemplateColumns: {
-                  xs: "repeat(2, 1fr)",
-                  sm: "repeat(3, 1fr)",
-                  md: "repeat(4, 1fr)",
-                  lg: "repeat(6, 1fr)",
-                },
-              }}
-            >
-              {clientLogos.map((client) => (
-                <Paper
-                  elevation={0}
-                  key={client.src}
-                  sx={{
-                    alignItems: "center",
-                    bgcolor: brand.white,
-                    border: `1px solid ${brand.line}`,
-                    borderRadius: 2,
-                    display: "flex",
-                    height: 84,
-                    justifyContent: "center",
-                    p: 1.5,
-                  }}
-                  variant="outlined"
-                >
-                  <Image
-                    alt={client.name}
-                    height={100}
-                    src={client.src}
-                    style={{ height: "auto", maxHeight: "100%", maxWidth: "100%", objectFit: "contain", width: "auto" }}
-                    width={200}
-                  />
-                </Paper>
-              ))}
-            </Box>
-            )}
-          </Container>
-        </Box>
-
         {testimonials.length > 0 ? (
           <Container
             aria-labelledby="testimonials-heading"
@@ -2769,6 +2822,51 @@ export function HomeExperience({
             </CardGrid>
           </Container>
         ) : null}
+
+        <Box
+          aria-labelledby="faqs-heading"
+          component="section"
+          id="faqs"
+          sx={{ bgcolor: brand.white, py: { xs: 6, md: 9 } }}
+        >
+          <Container maxWidth="lg">
+            <Stack spacing={1} sx={{ alignItems: "center", mb: 4, textAlign: "center" }}>
+              <Eyebrow>FAQS</Eyebrow>
+              <Box aria-hidden="true" sx={{ bgcolor: brand.accent, height: 2, width: 50 }} />
+              <Typography component="h2" id="faqs-heading" sx={{ mt: 1 }} variant="h4">
+                Frequently asked questions
+              </Typography>
+            </Stack>
+            <Box sx={{ mx: "auto", maxWidth: 760 }}>
+              <Box>
+                {faqs.map((faq) => (
+                  <Accordion
+                    disableGutters
+                    elevation={0}
+                    key={faq.question}
+                    sx={{
+                      border: `1px solid ${brand.line}`,
+                      mb: 1,
+                      "&::before": { display: "none" },
+                    }}
+                  >
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                      <Typography sx={{ fontWeight: 600 }} variant="body1">
+                        {faq.question}
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography sx={{ color: brand.muted }} variant="body2">
+                        {faq.answer}
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                ))}
+              </Box>
+            </Box>
+          </Container>
+        </Box>
+
           </>
         ) : null}
 
@@ -2890,7 +2988,7 @@ export function HomeExperience({
                   Make your next move with the full picture.
                 </Typography>
               </Box>
-              <Stack spacing={2} sx={{ flexShrink: 0, maxWidth: 360 }}>
+              <Stack spacing={2} sx={{ flexShrink: 0, maxWidth: 440 }}>
                 <Typography sx={{ color: "rgba(255,255,255,0.8)" }} variant="body1">
                   Tell us how your business works. We will show you where ProsERP can help.
                 </Typography>

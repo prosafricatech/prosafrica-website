@@ -71,10 +71,15 @@ export function SectionHeading({
   );
 }
 
-/** Numbered card used for capabilities, modules and workflow lists. */
+/**
+ * Card used for capabilities, industries and workflow lists. Pass `number`
+ * only when the cards are a sequence the reader follows in order; otherwise
+ * pass an `icon`, so a numbered grid never reads as steps when it is not.
+ */
 export function NumberedCard({
   detail,
   href,
+  icon,
   id,
   number,
   showArrow = false,
@@ -82,8 +87,10 @@ export function NumberedCard({
 }: {
   detail: string;
   href?: string;
+  icon?: ReactNode;
   id?: string;
-  number: string;
+  number?: string;
+  /** Ignored without `href`: an arrow on a card that goes nowhere is a false promise. */
   showArrow?: boolean;
   title: string;
 }) {
@@ -100,17 +107,40 @@ export function NumberedCard({
         height: "100%",
         p: 2.5,
         position: "relative",
-        transition: "border-color 160ms",
-        ...(href ? { "&:hover": { borderColor: brand.primary } } : null),
+        transition: "border-color 160ms, box-shadow 160ms",
+        ...(href
+          ? {
+              "&:hover": { borderColor: brand.primary, boxShadow: `0 6px 20px ${brand.tintPrimary}` },
+            }
+          : null),
       }}
       variant="outlined"
       {...(href ? { component: Link as never, href } : null)}
     >
       <Stack direction="row" sx={{ alignItems: "flex-start", justifyContent: "space-between" }}>
-        <Typography sx={{ color: brand.muted, fontWeight: 700 }} variant="caption">
-          {number}
-        </Typography>
-        {showArrow ? <CallMadeIcon fontSize="small" sx={{ color: brand.muted }} /> : null}
+        {icon ? (
+          <Box
+            aria-hidden="true"
+            sx={{
+              alignItems: "center",
+              bgcolor: brand.tintAccent,
+              borderRadius: 2,
+              color: brand.primary,
+              display: "flex",
+              height: 40,
+              justifyContent: "center",
+              mb: 1,
+              width: 40,
+            }}
+          >
+            {icon}
+          </Box>
+        ) : (
+          <Typography sx={{ color: brand.muted, fontWeight: 700 }} variant="caption">
+            {number}
+          </Typography>
+        )}
+        {showArrow && href ? <CallMadeIcon fontSize="small" sx={{ color: brand.muted }} /> : null}
       </Stack>
       <Typography component="h3" sx={{ mb: 0.75, mt: 0.5 }} variant="subtitle1">
         {title}
@@ -155,7 +185,12 @@ export function TextLink({
   return (
     <Button
       endIcon={<ArrowForwardIcon />}
-      sx={{ color: light ? brand.white : brand.primary, fontWeight: 600, textTransform: "none" }}
+      sx={{
+        color: light ? brand.white : brand.primary,
+        fontWeight: 600,
+        textTransform: "none",
+        whiteSpace: "nowrap",
+      }}
       {...(external ? { href } : { component: Link, href })}
     >
       {children}
