@@ -1,8 +1,14 @@
-const {
-  markEmailFailed,
-  markEmailSent,
-  saveInquiry,
-} = require("../../../services/leadStore");
+// The one piece of server code on this site.
+//
+// Everything else renders from data written in the components. This route
+// exists for a single reason: the SMTP credentials that send a demo request to
+// the sales inbox cannot sit in the browser, where anyone could open DevTools
+// and use the company's mail account. There is no database and nothing is
+// stored — the email is the record.
+//
+// If a send fails, the visitor is told so and asked to try again, because
+// nothing else captured their request.
+
 const { sendInquiryEmail } = require("../../../services/mailService");
 
 export const runtime = "nodejs";
@@ -57,29 +63,16 @@ export async function POST(request) {
 
   const inquiry = { full_name, email, phone, organization, industry, description };
 
-  // Record the lead before anything that can fail over the network. If this
-  // throws we genuinely have not captured the request, so the visitor is asked
-  // to retry; that is the only path that still loses data.
-  let inquiryId;
-  try {
-    inquiryId = saveInquiry(inquiry);
-  } catch (error) {
-    console.error("Could not record demo request:", error);
-    return Response.json(
-      { error: "We could not record your request right now. Please try again." },
-      { status: 503 },
-    );
-  }
-
-  // The email is a notification about a lead we already hold. Failing to send
-  // it is an internal problem to retry, not a reason to tell the visitor their
-  // request did not go through — and not a reason to make them submit twice.
   try {
     await sendInquiryEmail(inquiry);
-    markEmailSent(inquiryId);
   } catch (error) {
-    console.error(`Demo request ${inquiryId} saved, notification failed:`, error);
-    markEmailFailed(inquiryId, error);
+    // Logged in full for the operator; the visitor gets a plain retry message
+    // rather than anything about mail servers.
+    console.error("Demo request could not be sent:", error);
+    return Response.json(
+      { error: "We could not send your request right now. Please try again." },
+      { status: 502 },
+    );
   }
 
   return Response.json({ message: "Your demo request has been sent." });

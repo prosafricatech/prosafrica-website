@@ -143,60 +143,48 @@ Semantic landmarks and anchor targets ride on MUI components rather than bare ta
 - Responsive values use MUI breakpoint objects: `sx={{ display: { xs: "none", md: "flex" } }}`.
 - Sample data in product previews stays visibly fictional (`SAMPLE-001`, "Sample project") and labelled illustrative — see [`docs/product-evidence-register.md`](docs/product-evidence-register.md).
 
-## Data and the backend
+## No backend
 
-Editable data lives in SQLite through `node:sqlite`, Node's built-in driver — **no dependency and no
-database server**. `engines.node` is therefore `>=22.5.0`; on an older runtime the module does not
-exist and the API route fails at request time.
+**The site holds no data.** Every page renders from values written in the
+components — the module list, the industry pages, the FAQs, the client logos.
+Changing any of it means editing a file and deploying, and that is the whole
+mechanism. There is no database, no content store, and nothing to provision
+alongside the site.
 
-| File | Holds |
-|---|---|
-| [`services/db.js`](services/db.js) | connection, `DATA_DIR`, schema migrations |
-| [`services/leadStore.js`](services/leadStore.js) | demo requests and their notification state |
-| [`services/contentStore.js`](services/contentStore.js) | the client logo grid and its permissions |
+It was not always so. An earlier revision kept the client logos and the demo
+requests in SQLite through `node:sqlite`, which read well locally and failed
+everywhere else: the database lived in `.data/`, which is git-ignored, so a
+second clone rendered no logos at all, and a serverless host — where the
+function's own directory is read-only and `/tmp` is wiped between invocations —
+would have rejected every demo request outright. Twelve logos that change twice
+a year did not need a database. If editable-without-deploy content is wanted
+later, it needs a hosted database, not a file on the server's disk.
 
-Route handlers and pages talk to the stores, never to `db.js` directly, so moving to Postgres means
-rewriting three files rather than hunting SQL through the app.
+### The one exception
 
-Three things that will bite otherwise:
+[`app/api/demo-inquiry/route.js`](app/api/demo-inquiry/route.js) is the only
+server code here. It validates the demo form and sends one email, storing
+nothing. It exists because SMTP credentials cannot sit in the browser, where
+anyone could read them out of DevTools and send mail as the company.
 
-- **`node:sqlite` cannot be imported normally.** Turbopack fails with "Unsupported external type Url
-  for commonjs reference", so `db.js` resolves it through `createRequire` at runtime. Keep it that
-  way.
-- **Rows have a null prototype.** React refuses to pass them from a Server to a Client Component
-  ("Only plain objects … can be passed"), so every store spreads rows into plain objects before
-  returning them.
-- **`DATA_DIR` must be persistent.** It defaults to `.data/` (git-ignored). On a serverless host the
-  filesystem is ephemeral and rows will not survive — move to a hosted database before deploying
-  there. This fails *silently*: the write succeeds, returns an id, and the row is gone by the next
-  request, while demo notifications keep arriving by email. `db.js` therefore logs a warning when it
-  sees `VERCEL`, `AWS_LAMBDA_FUNCTION_NAME` or `NETLIFY` set. Treat that line as a blocker, not a
-  nag — the legacy `gulpfile.js` still carries a "Dummy build task for Vercel" comment.
+**The email is the only record of a lead.** If the send fails the visitor is
+told so and asked to retry, because nothing else captured it. Watch the logs:
+a run of `Demo request could not be sent` means leads are being lost in real
+time.
 
-Pages that read content set `export const revalidate` rather than rendering dynamically, so content
-is editable without a deploy while every request is still served from cache.
+### Client logos are a customer-reference claim
 
-### Client logos are permission-gated
+The twelve logos are a `clientLogos` array in
+[`components/home-experience.tsx`](components/home-experience.tsx). Publishing a
+company's name and mark asserts that it is a ProsERP customer and that its mark
+may be used, so each line needs permission on file — decision 1 in
+[`docs/product-evidence-register.md`](docs/product-evidence-register.md).
 
-`client_logos.permitted` defaults to **0**, and [`app/page.tsx`](app/page.tsx) passes only permitted
-rows to the page. With none cleared, the section renders the unnamed formulation that
-[`docs/product-evidence-register.md`](docs/product-evidence-register.md) recommends instead of named
-logos — which also keeps `#clients-heading` alive for the header and footer links. Set `permitted`
-only when written permission is actually on file, and record where in `permission_note`:
-
-```sh
-node scripts/logo-permissions.js                                      # list
-node scripts/logo-permissions.js allow "Transpower" "Email, 28 Oct"   # clear one
-node scripts/logo-permissions.js deny  "Transpower"                   # withdraw
-```
-
-**The permission record does not travel with the repository.** It lives in `.data/`, which is
-git-ignored, so every fresh clone — another laptop, a CI runner, the Amplify SSR function — seeds
-all twelve logos *unpermitted* and shows the unnamed formulation instead of the grid. That is the
-gate working as designed, but it means the decision has to be recorded again wherever the site runs,
-and in production it has to be recorded against a database that survives a restart. If the logos
-should simply be published everywhere, the record belongs in the repository rather than in each
-machine's database — that is a deliberate change to the gate, not a bug fix.
+Nothing in the code enforces that any more. The earlier `permitted` column did,
+and it is gone; a line in that array ships. Deleting the line is how a logo
+comes down. If the array is emptied the section falls back to the unnamed
+formulation the register recommends, which also keeps `#clients-heading` alive
+for the header and footer links.
 
 ## Related documents
 

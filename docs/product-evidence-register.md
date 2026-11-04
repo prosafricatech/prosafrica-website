@@ -38,6 +38,8 @@ Companies currently presented as clients: Transpower · White City International
 
 **Recommendation:** treat this as blocking for any public launch. Until each logo has written permission on file, either reduce the grid to the permitted subset or replace the section with an unnamed formulation ("Used by construction, fuel, trading and manufacturing businesses in Tanzania") that makes no identifiable claim.
 
+**Changed 4 November 2026.** For a week this was enforced in code: logos lived in a table whose `permitted` column defaulted to 0, and the grid rendered only cleared rows. That went when the data layer did — the record was kept in a git-ignored file, so it never reached a second machine and would never have reached production, which meant the grid that looked permission-gated locally simply showed nothing anywhere else. The twelve names are now an array in the component and every one of them ships. The recommendation above is unchanged; only its enforcement is gone, so emptying the array is the action it now calls for.
+
 ### Housekeeping
 
 Six logos from the purchased theme sit in `public/images/logo/` and are **not referenced by any source file**: `amazon.svg`, `google.svg`, `lenovo.svg`, `paypal.svg`, `shopify.svg`, `spotify.svg`. They are inert today, but if they ever reached the clients grid they would be a false customer claim. Recommend deleting them from the repository.
@@ -208,7 +210,7 @@ All tier **A**, i.e. evidenced at frontend level but absent from the website. Ca
 
 Each item blocks the work named against it.
 
-1. **Client logos** — is each of the 12 companies a live customer, and is there written permission for its mark? *Blocks: public launch of the homepage clients section.*
+1. **Client logos** — is each of the 12 companies a live customer, and is there written permission for its mark? *Blocks: public launch of the homepage clients section.* **This is now the only control.** The `permitted` column that held each logo back until someone recorded its permission was removed on 4 November 2026 along with the rest of the data layer; all twelve are a plain array in `components/home-experience.tsx` and all twelve ship. Removing one means deleting its line.
 2. **Positioning statement** — approve or revise the hero headline and lede. *Blocks: Phase 1 on the homepage.*
 3. ~~**Module detail lines** — confirm or strike "RFQs" and "supplier responses" (module 03).~~ **Closed 28 October 2026 by striking them**, from module 03 and from the trading-distribution page (§5). Reopen only with a source: if RFQs exist in the product, they are a claim worth making.
 4. **Report names** — confirm the eight unverified names, their availability, and permission dependencies. *Blocks: finance preview and hero quick-reports card.*
@@ -219,7 +221,7 @@ Each item blocks the work named against it.
 9. **VFD/TRA and the other documented-but-unpublished capabilities** — which may become public claims? *Blocks: Phase 3 page content.*
 10. **Stock thresholds** — is the Low Stock Alerts threshold configurable per item or store? *Blocks: the "stock against threshold" half of the hero proof line, and module 04's wording.*
 11. **Photography** — two of the three unused photos cannot be published as they are (§10). Replace, repair, or confirm they stay unused. *Blocks: any further use of photography on the site.*
-12. **Deployment target** — where does this site run? SQLite needs a persistent disk; a serverless host loses every lead row silently. *Blocks: go-live.*
+12. ~~**Deployment target** — where does this site run? SQLite needs a persistent disk; a serverless host loses every lead row silently.~~ **Closed 4 November 2026 by removing the database.** The site stores nothing, so it runs anywhere that runs Next.js. What replaced the risk is narrower and should be watched instead: the demo email is now the only record of a lead, so a failing SMTP configuration loses leads in real time rather than quietly mis-storing them.
 
 ## 10. Imagery
 

@@ -1494,10 +1494,28 @@ type ExperienceView = "home" | "tour" | "about";
 
 export type ClientLogo = { name: string; src: string };
 
+// Named customer references. Publishing a company's name and mark is a claim
+// about that company, so each line needs permission on file before it ships —
+// see decision 1 in docs/product-evidence-register.md. Nothing in the code
+// enforces that any more; deleting a line here is how a logo comes down.
+const clientLogos: readonly ClientLogo[] = [
+  { name: "Transpower", src: "/images/Transpower Logo.png" },
+  { name: "White City International", src: "/images/WHITE-CITY-GENUINE-LOGO-2.png" },
+  { name: "RES Company Ltd", src: "/images/LOGO Transparent.png" },
+  { name: "GP Petrol Stations", src: "/images/GP-Logo.png" },
+  { name: "Calia Service Station", src: "/images/canvasized victoria  logo.png" },
+  { name: "Farmer's Basket", src: "/images/Farmer's Basket Logo-1.png" },
+  { name: "Shalak Trading Company Ltd", src: "/images/Main-logo.png" },
+  { name: "Dowy Beauty", src: "/images/Transparent Logo.png" },
+  { name: "Buildsol", src: "/images/BUILDSOL LOGO-1.png" },
+  { name: "Black Mountain", src: "/images/black_mountain.png" },
+  { name: "Brecol", src: "/images/BRECOL_LOGO_PIC.png" },
+  { name: "Namis", src: "/images/namis.png" },
+];
+
 export function HomeExperience({
-  clientLogos = [],
   view = "home",
-}: { clientLogos?: readonly ClientLogo[]; view?: ExperienceView } = {}) {
+}: { view?: ExperienceView } = {}) {
   const [activeTour, setActiveTour] = useState<TourKey>("projects");
   const [activeStep, setActiveStep] = useState(0);
   const [projectPreviewTab, setProjectPreviewTab] = useState<ProjectPreviewTab>("wbs");

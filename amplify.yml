@@ -5,25 +5,25 @@
 # of all `baseDirectory: .next`, which is what marks the app as a Next.js
 # compute (SSR) deployment rather than a static one.
 #
+# The site holds no data. Every page renders from values written in the
+# components, and the single API route sends an email and stores nothing, so
+# there is no database to provision and no persistent disk to arrange.
+#
 # Environment variables to set in the Amplify console (App settings →
 # Environment variables), not here:
 #
-#   MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD   SMTP for demo requests
-#   DATA_DIR=/tmp/prosafrica                             see the note below
+#   MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD
 #
-# DATA_DIR matters more than it looks. The SSR function's own directory is
-# read-only; only /tmp is writable. Without the override, services/db.js fails
-# at mkdirSync and every demo request returns 503. With it, writes succeed but
-# the rows live only as long as that one invocation — see "Data and the
-# backend" in CLAUDE.md, and decision 12 in docs/product-evidence-register.md.
+# Those are the SMTP credentials the demo form sends through. Note the warning
+# below about where they end up.
 
 version: 1
 frontend:
   phases:
     preBuild:
       commands:
-        # node:sqlite needs Node 22.5+, and Amplify runs the SSR function on
-        # the same Node major version the build used. 24 also works.
+        # Amplify runs the SSR function on the same Node major version the
+        # build used, and supports 20, 22 and 24. Next 16 needs 20.9+.
         - nvm use 22
         - node --version
         - npm ci
@@ -34,15 +34,19 @@ frontend:
         # copied into it here. Only those names: a bare `env >>` would publish
         # the entire build environment into the deployment artifact.
         #
+        # This does put the SMTP password into a build artifact, which AWS
+        # warns against — anyone who can read deployments can read it. Amazon
+        # SES with an IAM role avoids that; plain SMTP credentials cannot.
+        #
         # `|| true` because grep exits 1 when nothing matches, which would
-        # otherwise fail the whole build on a missing optional variable.
-        - env | grep -e '^MAIL_' -e '^DATA_DIR=' >> .env.production || true
+        # otherwise fail the whole build on a missing variable.
+        - env | grep -e '^MAIL_' >> .env.production || true
         # Breaks the build if a theme edit broke a contrast rule.
         - npm run check:contrast
         - npm run build
   artifacts:
     # Must stay `.next` for a Next.js SSR app. Anything else and Amplify
-    # serves the site as static files and every route 404s.
+    # serves the site as static files and the demo form's route 404s.
     baseDirectory: .next
     files:
       - '**/*'
