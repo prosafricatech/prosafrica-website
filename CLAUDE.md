@@ -182,7 +182,21 @@ is editable without a deploy while every request is still served from cache.
 rows to the page. With none cleared, the section renders the unnamed formulation that
 [`docs/product-evidence-register.md`](docs/product-evidence-register.md) recommends instead of named
 logos — which also keeps `#clients-heading` alive for the header and footer links. Set `permitted`
-only when written permission is actually on file, and record where in `permission_note`.
+only when written permission is actually on file, and record where in `permission_note`:
+
+```sh
+node scripts/logo-permissions.js                                      # list
+node scripts/logo-permissions.js allow "Transpower" "Email, 28 Oct"   # clear one
+node scripts/logo-permissions.js deny  "Transpower"                   # withdraw
+```
+
+**The permission record does not travel with the repository.** It lives in `.data/`, which is
+git-ignored, so every fresh clone — another laptop, a CI runner, the Amplify SSR function — seeds
+all twelve logos *unpermitted* and shows the unnamed formulation instead of the grid. That is the
+gate working as designed, but it means the decision has to be recorded again wherever the site runs,
+and in production it has to be recorded against a database that survives a restart. If the logos
+should simply be published everywhere, the record belongs in the repository rather than in each
+machine's database — that is a deliberate change to the gate, not a bug fix.
 
 ## Related documents
 
