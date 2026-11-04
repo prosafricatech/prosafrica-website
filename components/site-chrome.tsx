@@ -9,6 +9,7 @@
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import AgricultureIcon from "@mui/icons-material/Agriculture";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ConstructionIcon from "@mui/icons-material/Construction";
 import EmailIcon from "@mui/icons-material/Email";
@@ -71,6 +72,7 @@ const platformMenu = [
       { detail: "Execution, budget and certificates", label: "Projects", module: "projects" },
       { detail: "Bills of materials and batches", label: "Manufacturing", module: "manufacturing" },
       { detail: "Shifts, dippings and fuel stock", label: "Fuel stations", module: "fuel" },
+      { detail: "Batches, feeding, mortality and harvest", label: "Bio production", module: "bio-production" },
     ],
   },
   {
@@ -107,6 +109,12 @@ const industryMenu = [
     href: "/industries/trading-distribution",
     icon: <LocalShippingIcon fontSize="small" />,
     label: "Trading & distribution",
+  },
+  {
+    detail: "Fish, poultry and livestock batches",
+    href: "/industries/agriculture-aquaculture",
+    icon: <AgricultureIcon fontSize="small" />,
+    label: "Agriculture & aquaculture",
   },
 ] as const;
 
@@ -344,7 +352,7 @@ export function SiteHeader() {
           ) : null}
           {openPanel === "industries" ? (
             <>
-              <Box sx={{ display: "grid", gap: 2, gridTemplateColumns: "repeat(4, 1fr)" }}>
+              <Box sx={{ display: "grid", gap: 2, gridTemplateColumns: "repeat(5, 1fr)" }}>
                 {industryMenu.map((industry) => (
                   <MenuLink
                     detail={industry.detail}

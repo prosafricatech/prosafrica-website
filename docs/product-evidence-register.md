@@ -216,6 +216,28 @@ All tier **A**, i.e. evidenced at frontend level but absent from the website. Ca
 
 ---
 
+## 7a. Module catalogue checked against the application, 4 November 2026
+
+The ProsERP application source (`projects/live-repo`) was read directly: the sellable modules in
+`src/utilities/constants/modules.ts`, the menu in `src/utilities/constants/menu-items.tsx`, and the
+English wording under `src/dictionaries/en/`. That is stronger evidence than the reverse-engineered
+flow document, and it is tier **A** for *what the screens do*. It is still not a commercial
+sign-off.
+
+| Change on the site | Source in the application |
+|---|---|
+| New module **Bio production**, in the homepage catalogue, the header's Platform menu, the product tour and a new industry page `/industries/agriculture-aquaculture` | `MODULES.BIO_PRODUCTION`; menu: Dashboard, Batches, Daily Records (Feeding, Mortality, Weight Samples, Costs, Harvest, Produce, Measurements), Reports, Masters (Farms, Unit Groups, Production Units, Species Templates, Measurement Parameters); `bioProduction.json` for unit types (pond, cage, tank, house, pen), watch/critical ranges, dashboard alerts, FCR, cost in WIP, write-offs and moved-to-stock |
+| Financial management now names bank reconciliation, supplier bills and customer invoices | Accounts & Finance menu |
+| Procurement names **RFQs** again, reversing the 28 October removal in §3 | Procurement & Supply menu, `/procurement/rfqs` |
+| Human resources names employees, attendance, payroll runs and PAYE tax bands | Human Resources menu |
+| Asset Register names depreciation runs and bookings of shared assets | Asset Register menu; `MODULES.ASSET_BOOKINGS` |
+| The hero and site description add farming to the industries served | follows from Bio production |
+
+**Still open:** whether Bio production is commercially ready to advertise, and whether the
+agriculture page's headline ("Know what every batch has eaten, lost and cost") is one ProsAfrica
+will stand behind. Both are owner decisions, not evidence questions. SMS (`MODULES.SMS`) exists in
+the application and is not yet on the site.
+
 ## 8. Needs decision from ProsAfrica
 
 Each item blocks the work named against it.

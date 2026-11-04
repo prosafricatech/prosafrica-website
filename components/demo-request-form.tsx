@@ -16,6 +16,7 @@ import { brand } from "./theme";
 type SubmissionState = "idle" | "submitting" | "success" | "error";
 
 const industries = [
+  "Agriculture and aquaculture",
   "Construction and projects",
   "Fuel station operations",
   "Manufacturing",

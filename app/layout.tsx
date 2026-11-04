@@ -15,7 +15,7 @@ const publicSans = Public_Sans({
 export const metadata: Metadata = {
   title: "ProsERP | Simplified Management and Control",
   description:
-    "ProsERP runs inventory, sales, projects, fuel stations and manufacturing on one system, and shows you where work, time and money stop agreeing.",
+    "ProsERP runs inventory, sales, projects, fuel stations, manufacturing and farms on one system, and shows you where work, time and money stop agreeing.",
   icons: {
     icon: "/images/logo/icon.png",
   },

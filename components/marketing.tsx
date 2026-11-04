@@ -153,7 +153,7 @@ export function NumberedCard({
 }
 
 /** Responsive grid wrapper for NumberedCard sets. */
-export function CardGrid({ children, columns = 4 }: { children: ReactNode; columns?: 2 | 3 | 4 }) {
+export function CardGrid({ children, columns = 4 }: { children: ReactNode; columns?: 2 | 3 | 4 | 5 }) {
   return (
     <Box
       sx={{

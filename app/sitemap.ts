@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/industries/fuel-stations",
     "/industries/manufacturing",
     "/industries/trading-distribution",
+    "/industries/agriculture-aquaculture",
   ];
 
   return pages.map((page) => ({

@@ -8,9 +8,11 @@
 
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
+import AgricultureIcon from "@mui/icons-material/Agriculture";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import AssessmentIcon from "@mui/icons-material/Assessment";
+import EditNoteIcon from "@mui/icons-material/EditNote";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import FactoryIcon from "@mui/icons-material/Factory";
 import InsightsIcon from "@mui/icons-material/Insights";
@@ -39,12 +41,14 @@ import { brand } from "./theme";
 const stepIcons = {
   batch: <LayersIcon />,
   factory: <FactoryIcon />,
+  farm: <AgricultureIcon />,
   insights: <InsightsIcon />,
   order: <ShoppingCartIcon />,
   plan: <EventNoteIcon />,
   pos: <PointOfSaleIcon />,
   receipt: <MoveToInboxIcon />,
   recipe: <ListAltIcon />,
+  records: <EditNoteIcon />,
   report: <AssessmentIcon />,
   shift: <ScheduleIcon />,
   station: <LocalGasStationIcon />,

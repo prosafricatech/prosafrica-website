@@ -103,6 +103,31 @@ const industryPages = {
       ["Finance", "Keep operational purchasing and sales visible alongside financial reporting."],
     ],
   },
+  "agriculture-aquaculture": {
+    number: "05",
+    name: "Agriculture & aquaculture",
+    eyebrow: "Farm operations",
+    title: "Know what every batch has eaten, lost and cost.",
+    description:
+      "Run fish, poultry and livestock batches from stocking to harvest, with feeding, mortality, weights and pond or house conditions recorded daily and the cost of each batch built up as it grows.",
+    accent: "Bio production",
+    summary: "Batch overview",
+    measure: "FCR",
+    measureLabel: "Feed conversion ratio",
+    flow: ["Farm & units", "Batch & stages", "Daily records", "Harvest & cost"],
+    steps: [
+      { icon: "farm", title: "Farm & units", detail: "Ponds, cages, tanks, houses and pens, grouped the way the farm is laid out.", visual: "locations" },
+      { icon: "batch", title: "Batch & stages", detail: "Each batch follows its species' stages, from entry weight to target weight.", visual: "timeline" },
+      { icon: "records", title: "Daily records", detail: "Feeding, mortality, weight samples and water or house conditions, day by day.", visual: "list" },
+      { icon: "receipt", title: "Harvest & cost", detail: "Harvest and produce move into stock carrying the cost the batch built up.", visual: "bars" },
+    ],
+    related: [
+      ["Inventory", "Harvested fish, birds or produce such as eggs go into stock as products."],
+      ["Procurement", "Feed and medication bought through purchasing before they are fed or applied."],
+      ["Finance", "Review batch costs, write-offs and value moved to stock alongside financial reporting."],
+      ["Process approval", "Keep farm requests and their review decisions within a visible workflow."],
+    ],
+  },
 } as const;
 
 type IndustrySlug = keyof typeof industryPages;

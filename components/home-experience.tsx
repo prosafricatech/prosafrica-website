@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import AgricultureIcon from "@mui/icons-material/Agriculture";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CheckIcon from "@mui/icons-material/Check";
@@ -57,6 +58,13 @@ import {
 import { FinanceDashboard } from "./finance-dashboard";
 import { DemoRequestForm } from "./demo-request-form";
 import { HeroDashboardMock } from "./hero-dashboard-mock";
+import {
+  BioProductionPreview,
+  FuelPreview,
+  ManufacturingPreview,
+  ProcessApprovalPreview,
+  ReportingPreview,
+} from "./tour-previews";
 import {
   CardGrid,
   CtaBar,
@@ -395,6 +403,43 @@ const tourContent = {
         metric: "Reports",
         metricLabel: "Sales overview",
         tag: "Invoices & reporting",
+      },
+    ],
+  },
+  "bio-production": {
+    label: "Bio production",
+    eyebrow: "Farm operations",
+    title: "Follow every batch from stocking to harvest.",
+    description:
+      "Batches move through the stages set for their species while feeding, deaths, weights and conditions are recorded against them, so the cost of each batch is known before it is harvested.",
+    steps: [
+      {
+        title: "Set up farms and units",
+        text: "Farms hold ponds, cages, tanks, houses or pens, grouped into lines, and each species carries its own growth stages.",
+        metric: "5",
+        metricLabel: "Unit types",
+        tag: "Farms & units",
+      },
+      {
+        title: "Record the day",
+        text: "Feeding and medication, mortality, weight samples and measurements are entered against the batch each day.",
+        metric: "Daily",
+        metricLabel: "Feed · deaths · weights",
+        tag: "Daily records",
+      },
+      {
+        title: "Catch problems early",
+        text: "Readings outside the watch or critical range, units left unmeasured and days without feed are flagged on the dashboard.",
+        metric: "Alerts",
+        metricLabel: "Watch · critical",
+        tag: "Dashboard",
+      },
+      {
+        title: "Harvest at a known cost",
+        text: "Harvest and produce go into stock carrying the cost the batch built up, and deaths beyond the normal rate are written off.",
+        metric: "FCR",
+        metricLabel: "Feed conversion",
+        tag: "Costs & harvest",
       },
     ],
   },
@@ -1388,17 +1433,18 @@ const projectTourTaskIds = ["survey", "resources", "materials", "structure"] as 
 // Scope is bounded by docs/product-evidence-register.md §3: nothing here
 // claims a capability sitting at tier C in that table.
 const modules = [
-  { number: "01", title: "Financial management", detail: "Transactions, budgets, reconciliations and financial reports." },
+  { number: "01", title: "Financial management", detail: "Transactions, budgets, bank reconciliation, supplier bills and customer invoices." },
   { number: "02", title: "Process approval", detail: "Route business requests for review and keep every decision visible." },
-  { number: "03", title: "Procurement", detail: "Purchase orders, goods received against them, and purchasing reports." },
+  { number: "03", title: "Procurement", detail: "RFQs, purchase orders, goods received against them, and purchasing reports." },
   { number: "04", title: "Inventory & stores", detail: "Stock movement and project-linked consumption, and low stock flagged before a store runs dry." },
   { number: "05", title: "Project management", detail: "Weighted execution against time elapsed, spend against budget, certificates against approval." },
   { number: "06", title: "Manufacturing", detail: "Bills of materials, production batches and cost reporting." },
   { number: "07", title: "Fuel stations", detail: "Station shifts, tank dippings, fuel stock and station reports." },
   { number: "08", title: "Point of sale", detail: "Sales counters, outlets, proformas and sales reporting." },
   { number: "09", title: "Reporting", detail: "Operational and financial views connected to daily activity." },
-  { number: "10", title: "Human resources", detail: "Employee leave, loan requests and payroll approval workflows." },
-  { number: "11", title: "Asset Register", detail: "Track registered assets, assigned locations, status and value." },
+  { number: "10", title: "Human resources", detail: "Employees, attendance, leave, loans and payroll runs with PAYE tax bands." },
+  { number: "11", title: "Asset Register", detail: "Registered assets, depreciation runs, and bookings of shared assets." },
+  { number: "12", title: "Bio production", detail: "Farms, batches, feeding, mortality, weights and harvest, with cost built up per batch." },
 ];
 
 // The six adoption steps the live site publishes as "Our Work Flow", reworded
@@ -1409,7 +1455,7 @@ const modules = [
 // docs/product-evidence-register.md before strengthening it.
 const heroPoints = [
   "Reports, P&L, cash flow and stock, up to date as work is recorded.",
-  "Built for trading, construction, fuel stations and manufacturing.",
+  "Built for trading, construction, fuel stations, manufacturing and farming.",
   "Trusted by businesses across Tanzania.",
 ];
 
@@ -1466,8 +1512,8 @@ const operatingProblems = [
   },
 ];
 
-// The eleven modules grouped by the job they do, so a visitor finds their own
-// area at a glance instead of reading eleven equal cards.
+// The twelve modules grouped by the job they do, so a visitor finds their own
+// area at a glance instead of reading twelve equal cards.
 const moduleGroups = [
   {
     icon: <AccountBalanceIcon />,
@@ -1482,7 +1528,7 @@ const moduleGroups = [
   {
     icon: <EngineeringIcon />,
     title: "Operations",
-    modules: ["Project management", "Manufacturing", "Fuel stations"],
+    modules: ["Project management", "Manufacturing", "Fuel stations", "Bio production"],
   },
   {
     icon: <FactCheckIcon />,
@@ -1555,6 +1601,12 @@ const industryLinks = [
     detail: "Coordinate purchasing, inventory, sales and financial visibility.",
     href: "/industries/trading-distribution",
   },
+  {
+    icon: <AgricultureIcon />,
+    title: "Agriculture & aquaculture",
+    detail: "Run fish, poultry and livestock batches from stocking to harvest.",
+    href: "/industries/agriculture-aquaculture",
+  },
 ];
 
 const audienceGroups = [
@@ -1583,7 +1635,7 @@ const audienceGroups = [
 const tourGroups: readonly { icon: React.ReactNode; modules: readonly TourKey[]; title: string }[] = [
   { icon: <AccountBalanceIcon />, modules: ["finance", "reporting", "asset-register"], title: "Money & control" },
   { icon: <Inventory2Icon />, modules: ["procurement", "inventory", "sales"], title: "Buying, stock & selling" },
-  { icon: <EngineeringIcon />, modules: ["projects", "manufacturing", "fuel"], title: "Operations" },
+  { icon: <EngineeringIcon />, modules: ["projects", "manufacturing", "fuel", "bio-production"], title: "Operations" },
   { icon: <FactCheckIcon />, modules: ["process-approval", "human-resources"], title: "People & approvals" },
 ];
 
@@ -1601,6 +1653,7 @@ const tourDestinations: Record<TourKey, string> = {
   "asset-register": "/#platform",
   sales: "/industries/trading-distribution",
   reporting: "/#platform",
+  "bio-production": "/industries/agriculture-aquaculture",
 };
 
 type ExperienceView = "home" | "tour" | "about";
@@ -1824,7 +1877,7 @@ export function HomeExperience({
                 </Typography>
                 <Typography sx={{ color: brand.muted, maxWidth: 560 }} variant="h6">
                   One system to run your operations, from inventory and sales to projects, fuel
-                  stations and manufacturing, all connected to your financials.
+                  stations, manufacturing and farms, all connected to your financials.
                 </Typography>
                 <Stack component="ul" spacing={1.25} sx={{ m: 0, p: 0 }}>
                   {heroPoints.map((point) => (
@@ -2038,7 +2091,7 @@ export function HomeExperience({
           <SectionHeading
             eyebrow="One platform, connected work"
             intro="Because the work and the money are recorded in the same system, ProsERP can hold one against the other. A purchase sits against the order it came from, consumption against the project that used it, a certificate against the approval that released it."
-            title="Eleven modules, one set of numbers."
+            title="Twelve modules, one set of numbers."
             titleId="platform-heading"
           />
           <CardGrid>
@@ -2179,7 +2232,7 @@ export function HomeExperience({
           </Suspense>
           <Container maxWidth="lg">
             <Stack spacing={1} sx={{ maxWidth: 720, mb: { xs: 3, md: 5 } }}>
-              <Eyebrow light>PRODUCT TOUR · 11 MODULES</Eyebrow>
+              <Eyebrow light>PRODUCT TOUR · 12 MODULES</Eyebrow>
               <Typography component="h1" variant="h3">
                 See how the pieces come together.
               </Typography>
@@ -2805,75 +2858,16 @@ export function HomeExperience({
                       <AssetRegisterPreview />
                     ) : activeTour === "human-resources" ? (
                       <PayrollPreview />
+                    ) : activeTour === "fuel" ? (
+                      <FuelPreview step={activeStep} />
+                    ) : activeTour === "manufacturing" ? (
+                      <ManufacturingPreview step={activeStep} />
+                    ) : activeTour === "bio-production" ? (
+                      <BioProductionPreview step={activeStep} />
+                    ) : activeTour === "process-approval" ? (
+                      <ProcessApprovalPreview step={activeStep} />
                     ) : (
-                      <Box>
-                        {/*
-                          One tile per step, carrying that step's headline
-                          figure. The step rail above already names the steps,
-                          so this reads as the screen's summary row instead of
-                          repeating the list.
-                        */}
-                        <Box
-                          sx={{
-                            display: "grid",
-                            gap: 1,
-                            gridTemplateColumns: { xs: "1fr 1fr", sm: `repeat(${tour.steps.length}, 1fr)` },
-                          }}
-                        >
-                          {tour.steps.map((item, index) => (
-                            <Box
-                              aria-pressed={activeStep === index}
-                              component="button"
-                              key={item.title}
-                              onClick={() => selectTourStep(index)}
-                              sx={{
-                                bgcolor: activeStep === index ? brand.tintAccent : brand.paper,
-                                border: `1px solid ${activeStep === index ? brand.accent : brand.line}`,
-                                borderRadius: 2,
-                                color: brand.ink,
-                                cursor: "pointer",
-                                font: "inherit",
-                                p: 1.5,
-                                textAlign: "left",
-                              }}
-                              type="button"
-                            >
-                              <Typography sx={{ color: brand.muted, display: "block" }} variant="caption">
-                                {item.tag}
-                              </Typography>
-                              <Typography component="strong" sx={{ display: "block" }} variant="h6">
-                                {item.metric}
-                              </Typography>
-                              <Typography sx={{ color: brand.muted }} variant="caption">
-                                {item.metricLabel}
-                              </Typography>
-                            </Box>
-                          ))}
-                        </Box>
-                        <Paper
-                          elevation={0}
-                          sx={{ border: `1px solid ${brand.line}`, borderRadius: 2, mt: 1.5, p: 1.5 }}
-                          variant="outlined"
-                        >
-                          <Stack direction="row" sx={{ color: brand.muted, justifyContent: "space-between", mb: 1 }}>
-                            <Typography variant="caption">{step.tag} · activity</Typography>
-                            <Typography variant="caption">Sample view</Typography>
-                          </Stack>
-                          <Stack direction="row" spacing={0.75} sx={{ alignItems: "flex-end", height: 96 }}>
-                            {[40, 62, 48, 75, 58, 88, 70, 64, 80, 55, 92, 76].map((height, index) => (
-                              <Box
-                                key={index}
-                                sx={{
-                                  bgcolor: index === 10 ? brand.accent : brand.primary,
-                                  borderRadius: "3px 3px 0 0",
-                                  flexGrow: 1,
-                                  height: `${height}%`,
-                                }}
-                              />
-                            ))}
-                          </Stack>
-                        </Paper>
-                      </Box>
+                      <ReportingPreview step={activeStep} />
                     )}
                       <Stack
                         direction="row"
@@ -2948,7 +2942,7 @@ export function HomeExperience({
             title="Built around how your business works."
             titleId="industries-heading"
           />
-          <CardGrid>
+          <CardGrid columns={5}>
             {industryLinks.map((industry) => (
               <NumberedCard
                 detail={industry.detail}
