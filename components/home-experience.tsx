@@ -1400,6 +1400,34 @@ const modules = [
 // The six adoption steps the live site publishes as "Our Work Flow", reworded
 // to describe mechanics rather than benefits. Nothing here claims a capability
 // sitting at tier C in docs/product-evidence-register.md.
+// The live site's hero checklist. "Trusted by businesses across Tanzania" is a
+// customer-reference claim already public on proserp.co.tz — see decision 1 in
+// docs/product-evidence-register.md before strengthening it.
+const heroPoints = [
+  "Reports, P&L, cash flow and stock, up to date as work is recorded.",
+  "Built for trading, construction, fuel stations and manufacturing.",
+  "Trusted by businesses across Tanzania.",
+];
+
+// Two ProsERP dashboard charts, floated beside the hero portrait as the live
+// site does.
+const heroCharts = [
+  {
+    alt: "ProsERP balance sheet trend chart",
+    height: 833,
+    position: { left: { sm: -8, md: -24 }, top: 24 },
+    src: "/images/Transparent  BS Trend.png",
+    width: 1018,
+  },
+  {
+    alt: "ProsERP profit and loss trend chart",
+    height: 767,
+    position: { right: { sm: -8, md: -24 }, top: "48%" },
+    src: "/images/Transparent  PL Trend.png",
+    width: 1019,
+  },
+];
+
 // The problems a visitor recognises before they care about modules. Each answer
 // restates a capability the module list already claims, so this section adds
 // framing, not new product claims.
@@ -1711,7 +1739,7 @@ export function HomeExperience({
             color: brand.ink,
             overflow: "hidden",
             position: "relative",
-            py: { xs: 6, md: 10 },
+            pt: { xs: 5, md: 6 },
           }}
         >
           <Box
@@ -1719,53 +1747,94 @@ export function HomeExperience({
             sx={{
               background: `radial-gradient(circle, ${brand.accent}14 0%, transparent 70%)`,
               borderRadius: "50%",
-              height: 520,
-              left: -160,
+              height: 620,
               position: "absolute",
-              top: -200,
-              width: 520,
+              right: -120,
+              top: -80,
+              width: 620,
             }}
           />
           <Container maxWidth="lg" sx={{ position: "relative" }}>
             <Box
               sx={{
-                alignItems: "center",
+                alignItems: "end",
                 display: "grid",
-                gap: { xs: 5, md: 6 },
-                gridTemplateColumns: { xs: "1fr", md: "1fr 1.05fr" },
+                gap: { xs: 4, md: 4 },
+                gridTemplateColumns: { xs: "1fr", md: "1.1fr 0.9fr" },
               }}
             >
-              <Stack spacing={2.5}>
-                <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
-                  <Box
-                    aria-hidden="true"
-                    sx={{ bgcolor: brand.accent, borderRadius: "50%", height: 8, width: 8 }}
-                  />
-                  <Eyebrow>Simplified Management and Control</Eyebrow>
-                </Stack>
-                <Typography component="h1" sx={{ lineHeight: 1.1 }} variant="h2">
-                  See where work, time and money{" "}
+              <Stack spacing={2.5} sx={{ alignSelf: "center", pb: { md: 6 } }}>
+                <Eyebrow>SIMPLIFIED MANAGEMENT AND CONTROL</Eyebrow>
+                <Typography component="h1" sx={{ fontWeight: 700, lineHeight: 1.1 }} variant="h2">
+                  An{" "}
                   <Box component="span" sx={{ color: brand.accent }}>
-                    stop agreeing.
-                  </Box>
+                    ERP
+                  </Box>{" "}
+                  that actually works.
                 </Typography>
-                <Typography sx={{ color: brand.muted, maxWidth: 540 }} variant="body1">
-                  ProsERP runs inventory, sales, projects, fuel stations and manufacturing on one
-                  system, so a slip shows up as a number instead of a surprise.
+                <Typography sx={{ color: brand.muted, maxWidth: 560 }} variant="h6">
+                  One system to run your operations, from inventory and sales to projects, fuel
+                  stations and manufacturing, all connected to your financials.
                 </Typography>
-                <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5}>
+                <Stack component="ul" spacing={1.25} sx={{ m: 0, p: 0 }}>
+                  {heroPoints.map((point) => (
+                    <Stack component="li" direction="row" key={point} spacing={1.25} sx={{ alignItems: "center" }}>
+                      <CheckCircleIcon aria-hidden sx={{ color: brand.accent }} />
+                      <Typography variant="body1">{point}</Typography>
+                    </Stack>
+                  ))}
+                </Stack>
+                <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} sx={{ pt: 1 }}>
                   <PrimaryAction href="/#request-demo">Request a demo</PrimaryAction>
                   <TextLink href="/product-tour">Explore the product</TextLink>
                 </Stack>
-                <Stack direction="row" spacing={1.5} sx={{ alignItems: "center", pt: 1 }}>
-                  <Box aria-hidden="true" sx={{ bgcolor: brand.accent, height: 2, width: 40 }} />
-                  <Typography sx={{ color: brand.muted }} variant="body2">
-                    Execution against time elapsed. Spend against budget. Stock against threshold.
-                  </Typography>
-                </Stack>
               </Stack>
 
-              <HeroDashboardMock />
+              <Box
+                sx={{
+                  display: { xs: "none", sm: "block" },
+                  justifySelf: "center",
+                  lineHeight: 0,
+                  maxWidth: 520,
+                  position: "relative",
+                  width: "100%",
+                }}
+              >
+                <Box
+                  sx={{
+                    mx: "auto",
+                    width: { sm: 300, md: 360 },
+                    "& img": { height: "auto", width: "100%" },
+                  }}
+                >
+                  <Image
+                    alt="A finance manager holding a tablet with ProsERP open"
+                    height={1264}
+                    priority
+                    sizes="(min-width: 900px) 360px, 300px"
+                    src="/images/hero.png"
+                    width={847}
+                  />
+                </Box>
+                {heroCharts.map((chart) => (
+                  <Paper
+                    elevation={0}
+                    key={chart.src}
+                    sx={{
+                      border: `1px solid ${brand.line}`,
+                      borderRadius: 2,
+                      boxShadow: `0 12px 32px ${brand.tintPrimary}`,
+                      p: 1,
+                      position: "absolute",
+                      width: { sm: 170, md: 200 },
+                      ...chart.position,
+                      "& img": { height: "auto", width: "100%" },
+                    }}
+                  >
+                    <Image alt={chart.alt} height={chart.height} sizes="200px" src={chart.src} width={chart.width} />
+                  </Paper>
+                ))}
+              </Box>
             </Box>
           </Container>
         </Box>
@@ -1979,6 +2048,28 @@ export function HomeExperience({
               </Paper>
             ))}
           </CardGrid>
+          <Box
+            sx={{
+              alignItems: "center",
+              display: "grid",
+              gap: { xs: 3, md: 6 },
+              gridTemplateColumns: { xs: "1fr", md: "0.8fr 1.2fr" },
+              mt: { xs: 6, md: 8 },
+            }}
+          >
+            <Box>
+              <Eyebrow>ONE SCREEN TO START THE DAY</Eyebrow>
+              <Typography component="h3" sx={{ mb: 1.5, mt: 0.5 }} variant="h5">
+                Every module reports into the same dashboard.
+              </Typography>
+              <Typography sx={{ color: brand.muted }} variant="body1">
+                Profit and loss, the balance sheet, stock value, purchases, low stock and due
+                invoices sit side by side, so the first thing you see each morning is where the
+                business stands.
+              </Typography>
+            </Box>
+            <HeroDashboardMock />
+          </Box>
           <Paper
             elevation={0}
             sx={{

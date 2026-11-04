@@ -29,13 +29,14 @@ import { useState } from "react";
 
 import { brand } from "./theme";
 
+// Four links and the demo button. "Our clients" and "Who it's for" stay in the
+// footer: the clients strip sits directly under the hero, and a crowded bar
+// made every link harder to find.
 const navLinks = [
   { href: "/#platform", label: "Platform" },
-  { href: "/about", label: "About" },
   { href: "/#industries", label: "Industries" },
-  { href: "/#clients-heading", label: "Our clients" },
-  { href: "/about#who-its-for", label: "Who it's for" },
   { href: "/product-tour", label: "Product tour" },
+  { href: "/about", label: "About" },
 ] as const;
 
 export function SiteHeader() {
@@ -150,6 +151,7 @@ const footerPages = [
   { href: "/about", label: "About" },
   { href: "/#industries", label: "Industries" },
   { href: "/#clients-heading", label: "Our clients" },
+  { href: "/about#who-its-for", label: "Who it's for" },
 ] as const;
 
 const footerExplore = [
