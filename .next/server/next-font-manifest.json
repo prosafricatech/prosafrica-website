@@ -1,0 +1,22 @@
+{
+  "app": {
+    "[project]/app/_not-found/page": [
+      "static/media/d8aeca813a9ab546-s.p.18rizl4rsrl42.woff2"
+    ],
+    "[project]/app/about/page": [
+      "static/media/d8aeca813a9ab546-s.p.18rizl4rsrl42.woff2"
+    ],
+    "[project]/app/contact/page": [
+      "static/media/d8aeca813a9ab546-s.p.18rizl4rsrl42.woff2"
+    ],
+    "[project]/app/industries/page": [
+      "static/media/d8aeca813a9ab546-s.p.18rizl4rsrl42.woff2"
+    ],
+    "[project]/app/page": [
+      "static/media/d8aeca813a9ab546-s.p.18rizl4rsrl42.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pages": {},
+  "pagesUsingSizeAdjust": false
+}

@@ -1,0 +1,29 @@
+2:"$Sreact.fragment"
+3:"/_next/static/chunks/3qfy96eoyh-ek.js"
+4:"/_next/static/chunks/2kx5o14dks_9y.js"
+5:I[39756,["$3","$4"],"default"]
+6:I[37457,["$3","$4"],"default"]
+b:"/_next/static/chunks/1oso_-vj9-_kl.js"
+c:I[33128,["$3","$4","$b"],"default"]
+d:I[5500,["$3","$4","$b"],"Image"]
+e:I[97367,["$3","$4"],"OutletBoundary"]
+f:"$Sreact.suspense"
+12:"ViewportBoundary"
+13:I[97367,["$3","$4"],"$12"]
+14:"MetadataBoundary"
+15:I[97367,["$3","$4"],"$14"]
+16:I[27201,["$3","$4"],"IconMark"]
+8:X
+8:C
+9:X
+a:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$2","c",{"children":[[["$","section",null,{"className":"bg-linear-to-b from-alt to-white","children":["$","div",null,{"className":"mx-auto max-w-7xl px-5 md:px-10 px-5 pt-28 pb-0 md:px-10 md:pt-41 md:pb-16","children":["$","div",null,{"className":"","children":[["$","span",null,{"className":"inline-block rounded-full bg-tint px-3.5 py-2 text-xs font-bold uppercase tracking-[1.5px] text-indigo","children":"Contact"}],["$","h1",null,{"className":"mt-5 text-[40px] leading-[1.1] tracking-[-2px] font-extrabold text-navy md:text-[60px]","children":"Let us talk."}],"$undefined"]}]}]}],["$","section",null,{"className":"mx-auto flex max-w-7xl flex-wrap items-start gap-12 px-5 pt-6 pb-24 md:px-10","children":[["$","div",null,{"className":"min-w-0 flex-[1_1_480px]","children":["$","$Lc",null,{}]}],["$","div",null,{"className":"flex min-w-0 flex-[1_1_480px] flex-col gap-6","children":[["$","div",null,{"className":"relative w-full overflow-hidden rounded-3xl shadow-[0_30px_70px_rgba(12,10,46,0.14)]","style":{"height":280},"children":["$","$Ld",null,{"src":"/images/team.jpg","alt":"Our team ready to help","fill":true,"sizes":"(max-width: 900px) 100vw, 640px","className":"object-cover"}]}],["$","div",null,{"className":"flex flex-col gap-5 rounded-[20px] bg-alt p-7.5","children":[["$","div","Email",{"children":[["$","div",null,{"className":"text-xs font-bold uppercase tracking-[1.5px] text-pink","children":"Email"}],["$","b",null,{"className":"mt-1.5 block text-[17px] text-navy","children":"info@prosafrica.com"}]]}],["$","div","Support",{"children":[["$","div",null,{"className":"text-xs font-bold uppercase tracking-[1.5px] text-pink","children":"Support"}],["$","b",null,{"className":"mt-1.5 block text-[17px] text-navy","children":"support@prosafrica.co.tz"}]]}],["$","div","Phone",{"children":[["$","div",null,{"className":"text-xs font-bold uppercase tracking-[1.5px] text-pink","children":"Phone"}],["$","b",null,{"className":"mt-1.5 block text-[17px] text-navy","children":"+255 746 917 817"}]]}],["$","div","Office",{"children":[["$","div",null,{"className":"text-xs font-bold uppercase tracking-[1.5px] text-pink","children":"Office"}],["$","b",null,{"className":"mt-1.5 block text-[17px] text-navy","children":"Dar es Salaam, Tanzania"}]]}]]}]]}]]}]],[["$","script","script-0",{"src":"/_next/static/chunks/1oso_-vj9-_kl.js","async":true}]],["$","$Le",null,{"children":["$","$f",null,{"name":"Next.MetadataOutlet","children":"$@10"}]}]]}],"p":"$@11","v":null,"s":"$9"}}]]
+1:[["children",{"s":"contact","h":64,"d":{"r":["$","$2","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}]}]]}],"p":"$@7","v":"$8","s":"$9"},"c":"$Qa"}]]
+0:{"t":{"t":{"s":"","h":16,"c":"$Q1"},"h":{"r":["$","$2","h",{"children":[null,["$","$L13",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L15",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$f",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Contact | ProsERP"}],["$","meta","1",{"name":"description","content":"One system for accounting, procurement, inventory, HR & payroll, POS, fuel station, projects and bio farming."}],["$","link","2",{"rel":"icon","href":"/icon.png?icon.2y3c_8xwyasam.png","sizes":"256x256","type":"image/png"}],["$","$L16","3",{}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@17","v":null,"s":"$9"}},"a":"$@18","u":"$@19","b":"2landnHChtVrUzbEffPzL"}
+10:null
+19:true
+9:300
+9:C
+18:0
+7:"$undefined"
+17:"$undefined"
+11:"$undefined"
