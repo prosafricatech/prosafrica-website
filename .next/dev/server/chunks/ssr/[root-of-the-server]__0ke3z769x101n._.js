@@ -879,6 +879,20 @@ const home = {
         title: 'Inside the modules.',
         text: 'A closer look at what each team works with day to day.'
     },
+    devices: {
+        title: 'Choose where you work from.',
+        text: 'ProsERP works on your laptop and on your phone. One system and one set of data, on every screen.',
+        laptop: {
+            name: 'Laptop and desktop',
+            desc: 'The full system on a bigger screen, for the work you do at your desk.'
+        },
+        phone: {
+            name: 'Mobile phone',
+            desc: 'The same system in your pocket, so work does not wait until you are back at the office.'
+        },
+        laptopAlt: 'ProsERP dashboard on a laptop',
+        phoneAlt: 'ProsERP dashboard on a mobile phone'
+    },
     industriesHeading: {
         eyebrow: 'Industries',
         title: 'Built for heavy, high-volume work.'

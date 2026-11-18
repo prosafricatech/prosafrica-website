@@ -73,7 +73,7 @@ function Home() {
                 className: "relative",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "absolute inset-x-0 top-0 bottom-[calc(56.25vw*0.1)] overflow-hidden [mask-image:linear-gradient(to_bottom,#000_62%,transparent_100%)] max-md:bottom-[calc(107vw*0.1)]",
+                        className: "absolute inset-x-0 top-0 bottom-[calc(56.25vw*0.1)] overflow-hidden [mask-image:linear-gradient(to_bottom,#000_62%,transparent_100%)] max-md:bottom-[10vw]",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$image$2d$component$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$export__Image__as__default$3e$__["default"], {
                             src: "/images/hero-bg.jpg",
                             alt: "",
@@ -160,6 +160,7 @@ function Home() {
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$LaptopHero$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
                         src: "/images/hero-laptop-v5.webp",
+                        mobileSrc: "/images/hero-phone-v1.webp",
                         alt: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["home"].hero.image.alt
                     }, void 0, false, {
                         fileName: "[project]/app/page.tsx",
@@ -1048,30 +1049,70 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 // The base's slanted lower edge ends around 88% of the image height on the left, so the fade must be gone by then.
 // The stops ease the fade: the bright top edge of the base stays crisp, then it dissolves quickly into the white.
 const MASK = 'linear-gradient(to bottom, #000 58%, rgba(0,0,0,0.65) 68%, rgba(0,0,0,0.25) 77%, rgba(0,0,0,0.06) 84%, transparent 88%)';
-function LaptopHero({ src, alt }) {
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "relative z-10 overflow-hidden",
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$image$2d$component$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$export__Image__as__default$3e$__["default"], {
-            src: src,
-            alt: alt,
-            width: 2880,
-            height: 1622,
-            priority: true,
-            sizes: "(max-width: 768px) 190vw, 100vw",
-            className: "relative -ml-[45%] block h-auto w-[190%] max-w-none md:ml-0 md:w-full",
-            // melts the dark base into the white page sooner, so it no longer reads as a black slab
-            style: {
-                WebkitMaskImage: MASK,
-                maskImage: MASK
-            }
-        }, void 0, false, {
-            fileName: "[project]/components/LaptopHero.tsx",
-            lineNumber: 13,
-            columnNumber: 7
-        }, this)
-    }, void 0, false, {
+// Phone version: the bottom of the (cropped) phone fades out softly.
+const PHONE_MASK = 'linear-gradient(to bottom, #000 62%, rgba(0,0,0,0.5) 82%, transparent 100%)';
+function LaptopHero({ src, mobileSrc, alt }) {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Fragment"], {
+        children: [
+            mobileSrc && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "relative z-10 flex justify-center px-5 pt-4 md:hidden",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "aspect-[1400/1762] w-[78vw] max-w-[420px] overflow-hidden",
+                    style: {
+                        WebkitMaskImage: PHONE_MASK,
+                        maskImage: PHONE_MASK
+                    },
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$image$2d$component$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$export__Image__as__default$3e$__["default"], {
+                        src: mobileSrc,
+                        alt: alt,
+                        width: 1400,
+                        height: 2349,
+                        sizes: "80vw",
+                        className: "block h-auto w-full"
+                    }, void 0, false, {
+                        fileName: "[project]/components/LaptopHero.tsx",
+                        lineNumber: 32,
+                        columnNumber: 13
+                    }, this)
+                }, void 0, false, {
+                    fileName: "[project]/components/LaptopHero.tsx",
+                    lineNumber: 28,
+                    columnNumber: 11
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/components/LaptopHero.tsx",
+                lineNumber: 26,
+                columnNumber: 9
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: mobileSrc ? 'relative z-10 hidden overflow-hidden md:block' : 'relative z-10 overflow-hidden',
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$image$2d$component$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$export__Image__as__default$3e$__["default"], {
+                    src: src,
+                    alt: alt,
+                    width: 2880,
+                    height: 1622,
+                    priority: true,
+                    sizes: "(max-width: 768px) 190vw, 100vw",
+                    className: "relative -ml-[45%] block h-auto w-[190%] max-w-none md:ml-0 md:w-full",
+                    // melts the dark base into the white page sooner, so it no longer reads as a black slab
+                    style: {
+                        WebkitMaskImage: MASK,
+                        maskImage: MASK
+                    }
+                }, void 0, false, {
+                    fileName: "[project]/components/LaptopHero.tsx",
+                    lineNumber: 44,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/components/LaptopHero.tsx",
+                lineNumber: 37,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
         fileName: "[project]/components/LaptopHero.tsx",
-        lineNumber: 12,
+        lineNumber: 23,
         columnNumber: 5
     }, this);
 }
