@@ -11,7 +11,6 @@ import LaptopHero from '@/components/LaptopHero';
 import HeroBackground from '@/components/HeroBackground';
 import ClientLogos from '@/components/ClientLogos';
 import ModuleCard from '@/components/ModuleCard';
-import ModuleShowcase from '@/components/ModuleShowcase';
 import IndustryCard from '@/components/IndustryCard';
 import DevicesSection from '@/components/DevicesSection';
 import StepItem from '@/components/StepItem';
@@ -72,25 +71,17 @@ export default function Home() {
       {/* ===== SECTION: CLIENT LOGOS ===== */}
       <ClientLogos title={home.clientsTitle} clients={clients} />
 
-      {/* ===== START: MODULES OVERVIEW (8 module cards) ===== */}
-      <Section>
-        <SplitHeading title={home.modulesHeading.title} text={home.modulesHeading.text} />
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4">
-          {modules.map((m) => (
-            <ModuleCard key={m.n} {...m} />
-          ))}
-        </div>
-      </Section>
-      {/* ===== END: MODULES OVERVIEW (8 module cards) ===== */}
-
-      {/* ===== START: INSIDE THE MODULES (tabbed showcase) ===== */}
+      {/* ===== START: MODULES (8 cards: photo, description, what it covers, learn more) ===== */}
       <Section tone="alt">
-        <SplitHeading title={home.highlightsHeading.title} text={home.highlightsHeading.text} />
-        <div className="mt-12 md:mt-16">
-          <ModuleShowcase items={highlights.map((h) => ({ ...h, desc: modules.find((m) => m.name === h.name)?.desc }))} />
+        <SplitHeading title={home.modulesHeading.title} text={home.modulesHeading.text} />
+        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {modules.map((m) => {
+            const h = highlights.find((x) => x.name === m.name);
+            return <ModuleCard key={m.n} name={m.name} desc={m.desc} items={h?.items ?? []} image={h?.image} />;
+          })}
         </div>
       </Section>
-      {/* ===== END: INSIDE THE MODULES (tabbed showcase) ===== */}
+      {/* ===== END: MODULES (8 cards: photo, description, what it covers, learn more) ===== */}
 
       {/* ===== START: INDUSTRIES (sector cards) ===== */}
       <Section>

@@ -794,11 +794,6 @@ const home = {
         title: 'Everything your operation needs, in eight modules.',
         text: 'Start with one, add the rest as you grow. Every module shares the same data.'
     },
-    highlightsHeading: {
-        eyebrow: 'What you can do',
-        title: 'Inside the modules.',
-        text: 'A closer look at what each team works with day to day.'
-    },
     devices: {
         title: 'Choose where you work from.',
         text: 'ProsERP works on your laptop and on your phone. One system and one set of data, on every screen.',
