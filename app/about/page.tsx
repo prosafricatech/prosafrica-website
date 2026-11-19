@@ -7,8 +7,9 @@ import StepItem from '@/components/StepItem';
 import CtaBand from '@/components/CtaBand';
 import BranchDiagram from '@/components/BranchDiagram';
 import { sectors, about } from '@/lib/content';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata = { title: about.meta.title };
+export const metadata = pageMetadata(about.meta, '/about');
 
 export default function About() {
   const { whatWeDo, approach } = about;

@@ -105,7 +105,7 @@ self.__SERVER_FILES_MANIFEST={
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "/Volumes/Macintosh HD/projects/pros-landing/prosafrica-website",
+    "outputFileTracingRoot": "/sessions/rcw-01hiuyuubvpcbdrebu7auhrv/mnt/pros-landing/prosafrica-website",
     "enablePrerenderSourceMaps": true,
     "cacheComponents": false,
     "cacheLife": {
@@ -181,7 +181,7 @@ self.__SERVER_FILES_MANIFEST={
       "proxyPrefetch": "flexible",
       "optimisticClientCache": true,
       "manualClientBasePath": false,
-      "cpus": 7,
+      "cpus": 3,
       "memoryBasedWorkersCount": false,
       "imgOptConcurrency": null,
       "imgOptOperationCache": null,
@@ -334,13 +334,13 @@ self.__SERVER_FILES_MANIFEST={
     "htmlLimitedBots": "[\\w-]+-Google|Google-[\\w-]+|Chrome-Lighthouse|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview|Yeti|googleweblight",
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.mjs",
-    "repoRoot": "/Volumes/Macintosh HD/projects/pros-landing/prosafrica-website",
+    "repoRoot": "/sessions/rcw-01hiuyuubvpcbdrebu7auhrv/mnt/pros-landing/prosafrica-website",
     "turbopack": {
-      "root": "/Volumes/Macintosh HD/projects/pros-landing/prosafrica-website"
+      "root": "/sessions/rcw-01hiuyuubvpcbdrebu7auhrv/mnt/pros-landing/prosafrica-website"
     },
     "distDirRoot": ".next"
   },
-  "appDir": "/Volumes/Macintosh HD/projects/pros-landing/prosafrica-website",
+  "appDir": "/sessions/rcw-01hiuyuubvpcbdrebu7auhrv/mnt/pros-landing/prosafrica-website",
   "relativeAppDir": "",
   "files": [
     ".next/package.json",

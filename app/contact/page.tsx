@@ -4,8 +4,9 @@ import Photo from '@/components/Photo';
 import Eyebrow from '@/components/Eyebrow';
 import ContactForm from '@/components/ContactForm';
 import { contact } from '@/lib/content';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata = { title: contact.meta.title };
+export const metadata = pageMetadata(contact.meta, '/contact');
 
 export default function Contact() {
   return (

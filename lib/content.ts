@@ -82,6 +82,7 @@ export const clients = [
 
 export const site = {
   title: 'ProsERP',
+  url: 'https://proserp.co.tz',
   description: 'One system for accounting, procurement, inventory, HR & payroll, POS, fuel station, projects and bio farming.',
   ctaLabel: 'Request a demo',
 };
@@ -99,7 +100,11 @@ export const footer = {
 };
 
 export const home = {
-  meta: { title: 'ProsERP' },
+  meta: {
+    title: 'ProsERP | ERP for accounting, inventory & HR in Tanzania',
+    description:
+      'ProsERP by ProsAfrica brings accounting, procurement, inventory, HR & payroll, POS, fuel station, projects and bio farming into one connected system for businesses in Tanzania.',
+  },
   hero: {
     badge: 'ENTERPRISE RESOURCE PLANNING',
     title: 'One system to run every part of your business.',
@@ -139,7 +144,11 @@ export const home = {
 };
 
 export const about = {
-  meta: { title: 'About | ProsAfrica' },
+  meta: {
+    title: 'About ProsAfrica',
+    description:
+      'ProsAfrica provides business management technology that connects finances, people, resources and daily operations through ProsERP, one integrated ERP platform.',
+  },
   hero: {
     eyebrow: 'About ProsAfrica',
     title: 'Business operations, made simpler.',
@@ -201,7 +210,11 @@ export const about = {
 };
 
 export const industries = {
-  meta: { title: 'Industries | ProsERP' },
+  meta: {
+    title: 'ERP for manufacturing, fuel, construction and more',
+    description:
+      'See how ProsERP supports manufacturing, fuel and energy, construction, property management, distribution and wholesale businesses, and which modules fit each one.',
+  },
   hero: {
     eyebrow: 'Industries',
     title: 'Sectors we support.',
@@ -223,7 +236,11 @@ export const contactForm = {
 };
 
 export const contact = {
-  meta: { title: 'Contact | ProsERP' },
+  meta: {
+    title: 'Contact us and request a demo',
+    description:
+      'Talk to the ProsAfrica team in Dar es Salaam, Tanzania. Request a ProsERP demo, ask about pricing, or find out which modules fit your business.',
+  },
   hero: {
     eyebrow: 'Contact',
     title: 'Let us talk.',

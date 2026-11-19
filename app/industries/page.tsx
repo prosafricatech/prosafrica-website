@@ -6,8 +6,9 @@ import Section from '@/components/Section';
 import SplitHeading from '@/components/SplitHeading';
 import CtaBand from '@/components/CtaBand';
 import { sectors, modules, industries } from '@/lib/content';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata = { title: industries.meta.title };
+export const metadata = pageMetadata(industries.meta, '/industries');
 
 // Only show module columns that at least one sector uses.
 const usedModules = modules.map((m) => m.name).filter((m) => sectors.some((s) => s.mods.includes(m)));

@@ -6,5 +6,9 @@
   "/contact/page": "/contact",
   "/icon.png/route": "/icon.png",
   "/industries/page": "/industries",
-  "/page": "/"
+  "/opengraph-image.png/route": "/opengraph-image.png",
+  "/page": "/",
+  "/robots.txt/route": "/robots.txt",
+  "/sitemap.xml/route": "/sitemap.xml",
+  "/twitter-image.png/route": "/twitter-image.png"
 }

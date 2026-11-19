@@ -50,8 +50,64 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$ap
 ;
 ;
 const metadata = {
-    title: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["site"].title,
-    description: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["site"].description
+    metadataBase: new URL(__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["site"].url),
+    title: {
+        default: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["home"].meta.title,
+        template: '%s | ProsERP'
+    },
+    description: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["home"].meta.description,
+    applicationName: 'ProsERP',
+    alternates: {
+        canonical: '/'
+    },
+    openGraph: {
+        type: 'website',
+        siteName: 'ProsERP',
+        locale: 'en_TZ',
+        url: '/',
+        title: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["home"].meta.title,
+        description: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["home"].meta.description
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["home"].meta.title,
+        description: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["home"].meta.description
+    },
+    robots: {
+        index: true,
+        follow: true
+    }
+};
+// Company + product details for Google (JSON-LD structured data).
+const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+        {
+            '@type': 'Organization',
+            '@id': `${__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["site"].url}/#organization`,
+            name: 'ProsAfrica',
+            url: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["site"].url,
+            logo: `${__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["site"].url}/logos/proserp-logo.png`,
+            email: 'info@prosafrica.com',
+            telephone: '+255746917817',
+            address: {
+                '@type': 'PostalAddress',
+                addressLocality: 'Dar es Salaam',
+                addressCountry: 'TZ'
+            }
+        },
+        {
+            '@type': 'SoftwareApplication',
+            '@id': `${__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["site"].url}/#software`,
+            name: 'ProsERP',
+            url: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["site"].url,
+            applicationCategory: 'BusinessApplication',
+            description: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["home"].meta.description,
+            publisher: {
+                '@id': `${__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$content$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["site"].url}/#organization`
+            }
+        }
+    ]
 };
 function RootLayout({ children }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("html", {
@@ -60,37 +116,47 @@ function RootLayout({ children }) {
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("body", {
             className: `${__TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$plus_jakarta_sans_f3c7bfbb$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].className} bg-white text-ink`,
             children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("script", {
+                    type: "application/ld+json",
+                    dangerouslySetInnerHTML: {
+                        __html: JSON.stringify(jsonLd)
+                    }
+                }, void 0, false, {
+                    fileName: "[project]/app/layout.tsx",
+                    lineNumber: 63,
+                    columnNumber: 9
+                }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Nav$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                     fileName: "[project]/app/layout.tsx",
-                    lineNumber: 24,
+                    lineNumber: 64,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
                     children: children
                 }, void 0, false, {
                     fileName: "[project]/app/layout.tsx",
-                    lineNumber: 25,
+                    lineNumber: 65,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Footer$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                     fileName: "[project]/app/layout.tsx",
-                    lineNumber: 26,
+                    lineNumber: 66,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$WhatsAppButton$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                     fileName: "[project]/app/layout.tsx",
-                    lineNumber: 27,
+                    lineNumber: 67,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/layout.tsx",
-            lineNumber: 23,
+            lineNumber: 62,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/layout.tsx",
-        lineNumber: 22,
+        lineNumber: 61,
         columnNumber: 5
     }, this);
 }
@@ -817,6 +883,7 @@ const clients = [
 ];
 const site = {
     title: 'ProsERP',
+    url: 'https://proserp.co.tz',
     description: 'One system for accounting, procurement, inventory, HR & payroll, POS, fuel station, projects and bio farming.',
     ctaLabel: 'Request a demo'
 };
@@ -855,7 +922,8 @@ const footer = {
 };
 const home = {
     meta: {
-        title: 'ProsERP'
+        title: 'ProsERP | ERP for accounting, inventory & HR in Tanzania',
+        description: 'ProsERP by ProsAfrica brings accounting, procurement, inventory, HR & payroll, POS, fuel station, projects and bio farming into one connected system for businesses in Tanzania.'
     },
     hero: {
         badge: 'ENTERPRISE RESOURCE PLANNING',
@@ -917,7 +985,8 @@ const home = {
 };
 const about = {
     meta: {
-        title: 'About | ProsAfrica'
+        title: 'About ProsAfrica',
+        description: 'ProsAfrica provides business management technology that connects finances, people, resources and daily operations through ProsERP, one integrated ERP platform.'
     },
     hero: {
         eyebrow: 'About ProsAfrica',
@@ -1017,7 +1086,8 @@ const about = {
 };
 const industries = {
     meta: {
-        title: 'Industries | ProsERP'
+        title: 'ERP for manufacturing, fuel, construction and more',
+        description: 'See how ProsERP supports manufacturing, fuel and energy, construction, property management, distribution and wholesale businesses, and which modules fit each one.'
     },
     hero: {
         eyebrow: 'Industries',
@@ -1062,7 +1132,8 @@ const contactForm = {
 };
 const contact = {
     meta: {
-        title: 'Contact | ProsERP'
+        title: 'Contact us and request a demo',
+        description: 'Talk to the ProsAfrica team in Dar es Salaam, Tanzania. Request a ProsERP demo, ask about pricing, or find out which modules fit your business.'
     },
     hero: {
         eyebrow: 'Contact',

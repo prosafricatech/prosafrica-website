@@ -737,6 +737,7 @@ const clients = [
 ];
 const site = {
     title: 'ProsERP',
+    url: 'https://proserp.co.tz',
     description: 'One system for accounting, procurement, inventory, HR & payroll, POS, fuel station, projects and bio farming.',
     ctaLabel: 'Request a demo'
 };
@@ -775,7 +776,8 @@ const footer = {
 };
 const home = {
     meta: {
-        title: 'ProsERP'
+        title: 'ProsERP | ERP for accounting, inventory & HR in Tanzania',
+        description: 'ProsERP by ProsAfrica brings accounting, procurement, inventory, HR & payroll, POS, fuel station, projects and bio farming into one connected system for businesses in Tanzania.'
     },
     hero: {
         badge: 'ENTERPRISE RESOURCE PLANNING',
@@ -837,7 +839,8 @@ const home = {
 };
 const about = {
     meta: {
-        title: 'About | ProsAfrica'
+        title: 'About ProsAfrica',
+        description: 'ProsAfrica provides business management technology that connects finances, people, resources and daily operations through ProsERP, one integrated ERP platform.'
     },
     hero: {
         eyebrow: 'About ProsAfrica',
@@ -937,7 +940,8 @@ const about = {
 };
 const industries = {
     meta: {
-        title: 'Industries | ProsERP'
+        title: 'ERP for manufacturing, fuel, construction and more',
+        description: 'See how ProsERP supports manufacturing, fuel and energy, construction, property management, distribution and wholesale businesses, and which modules fit each one.'
     },
     hero: {
         eyebrow: 'Industries',
@@ -982,7 +986,8 @@ const contactForm = {
 };
 const contact = {
     meta: {
-        title: 'Contact | ProsERP'
+        title: 'Contact us and request a demo',
+        description: 'Talk to the ProsAfrica team in Dar es Salaam, Tanzania. Request a ProsERP demo, ask about pricing, or find out which modules fit your business.'
     },
     hero: {
         eyebrow: 'Contact',
