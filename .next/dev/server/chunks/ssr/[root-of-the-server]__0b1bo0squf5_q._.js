@@ -359,26 +359,31 @@ const modules = [
     },
     {
         n: '04',
+        name: 'Manufacturing',
+        desc: 'Plan production, see what each finished unit really costs, and move finished goods into stock.'
+    },
+    {
+        n: '05',
         name: 'HR & Payroll',
         desc: 'Employee records, leave, loan management and payroll in one place, from hiring to monthly pay.'
     },
     {
-        n: '05',
+        n: '06',
         name: 'POS',
         desc: 'Sell at the counter and keep every sale connected to your stock and accounts.'
     },
     {
-        n: '06',
+        n: '07',
         name: 'Fuel Station',
         desc: 'Run pump sales, fuel stock and daily station operations alongside the rest of your business.'
     },
     {
-        n: '07',
+        n: '08',
         name: 'Projects',
         desc: 'Plan work, assign teams and see cost against progress as the job moves.'
     },
     {
-        n: '08',
+        n: '09',
         name: 'Bio Farming',
         desc: 'Run fish and poultry farms: stock, feed and costs tracked in the same records your finance team uses.'
     }
@@ -394,6 +399,7 @@ const sectors = [
             'Accounting',
             'Procurement',
             'Inventory',
+            'Manufacturing',
             'HR & Payroll'
         ],
         features: [
@@ -561,6 +567,15 @@ const highlights = [
             'Stock across stores and sites',
             'Receipts and issues',
             'Stock linked to projects'
+        ]
+    },
+    {
+        name: 'Manufacturing',
+        image: '/images/modules/manufacturing.jpg',
+        items: [
+            'Raw materials and production costs combined',
+            'Cost per unit of finished goods',
+            'Work in progress and production runs'
         ]
     },
     {
@@ -738,11 +753,11 @@ const clients = [
 const site = {
     title: 'ProsERP',
     url: 'https://proserp.co.tz',
-    description: 'One system for accounting, procurement, inventory, HR & payroll, POS, fuel station, projects and bio farming.',
+    description: 'One system for accounting, procurement, inventory, manufacturing, HR & payroll, POS, fuel station, projects and bio farming.',
     ctaLabel: 'Request a demo'
 };
 const footer = {
-    blurb: 'One platform for accounting, procurement, inventory, HR & payroll, POS, fuel station, projects and bio farming.',
+    blurb: 'One platform for accounting, procurement, inventory, manufacturing, HR & payroll, POS, fuel station, projects and bio farming.',
     companyLinks: [
         {
             href: '/about',
@@ -761,6 +776,7 @@ const footer = {
         'Accounting',
         'Procurement',
         'Inventory',
+        'Manufacturing',
         'HR & Payroll',
         'POS',
         'Fuel Station',
@@ -777,12 +793,12 @@ const footer = {
 const home = {
     meta: {
         title: 'ProsERP | ERP for accounting, inventory & HR in Tanzania',
-        description: 'ProsERP by ProsAfrica brings accounting, procurement, inventory, HR & payroll, POS, fuel station, projects and bio farming into one connected system for businesses in Tanzania.'
+        description: 'ProsERP by ProsAfrica brings accounting, procurement, inventory, manufacturing, HR & payroll, POS, fuel station, projects and bio farming into one connected system for businesses in Tanzania.'
     },
     hero: {
         badge: 'ENTERPRISE RESOURCE PLANNING',
         title: 'One system to run every part of your business.',
-        lead: 'ProsERP brings accounting, procurement, inventory, HR & payroll, POS, fuel station, projects and bio farming into one platform, so your teams work from the same numbers.',
+        lead: 'ProsERP brings accounting, procurement, inventory, manufacturing, HR & payroll, POS, fuel station, projects and bio farming into one platform, so your teams work from the same numbers.',
         primaryCta: 'Request a demo',
         secondaryCta: 'See industries',
         image: {
@@ -793,7 +809,7 @@ const home = {
     clientsTitle: 'Trusted by a variety of businesses',
     modulesHeading: {
         eyebrow: 'The platform',
-        title: 'Everything your operation needs, in eight modules.',
+        title: 'Everything your operation needs, in nine modules.',
         text: 'Start with one, add the rest as you grow. Every module shares the same data.'
     },
     devices: {
@@ -941,7 +957,7 @@ const about = {
 const industries = {
     meta: {
         title: 'ERP for manufacturing, fuel, construction and more',
-        description: 'See how ProsERP supports manufacturing, fuel and energy, construction, property management, distribution and wholesale businesses, and which modules fit each one.'
+        description: 'See how ProsERP supports manufacturing, fuel and energy, construction, property management, distribution and wholesale businesses.'
     },
     hero: {
         eyebrow: 'Industries',

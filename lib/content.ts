@@ -2,15 +2,16 @@ export const modules = [
   { n: '01', name: 'Accounting', desc: 'Ledgers, payments and reports that follow every transaction back to its source.' },
   { n: '02', name: 'Procurement', desc: 'Requisitions, purchase orders and supplier records with clear approval trails.' },
   { n: '03', name: 'Inventory', desc: 'Track stock across stores and sites, with receipts and issues tied to projects.' },
-  { n: '04', name: 'HR & Payroll', desc: 'Employee records, leave, loan management and payroll in one place, from hiring to monthly pay.' },
-  { n: '05', name: 'POS', desc: 'Sell at the counter and keep every sale connected to your stock and accounts.' },
-  { n: '06', name: 'Fuel Station', desc: 'Run pump sales, fuel stock and daily station operations alongside the rest of your business.' },
-  { n: '07', name: 'Projects', desc: 'Plan work, assign teams and see cost against progress as the job moves.' },
-  { n: '08', name: 'Bio Farming', desc: 'Run fish and poultry farms: stock, feed and costs tracked in the same records your finance team uses.' },
+  { n: '04', name: 'Manufacturing', desc: 'Plan production, see what each finished unit really costs, and move finished goods into stock.' },
+  { n: '05', name: 'HR & Payroll', desc: 'Employee records, leave, loan management and payroll in one place, from hiring to monthly pay.' },
+  { n: '06', name: 'POS', desc: 'Sell at the counter and keep every sale connected to your stock and accounts.' },
+  { n: '07', name: 'Fuel Station', desc: 'Run pump sales, fuel stock and daily station operations alongside the rest of your business.' },
+  { n: '08', name: 'Projects', desc: 'Plan work, assign teams and see cost against progress as the job moves.' },
+  { n: '09', name: 'Bio Farming', desc: 'Run fish and poultry farms: stock, feed and costs tracked in the same records your finance team uses.' },
 ];
 
 export const sectors = [
-  { tag: 'SECTOR 01', name: 'Manufacturing', sub: 'Plants, stores and production costs under one roof.', img: '/images/silos.jpg', desc: 'Keep raw materials, finished stock, wages and purchasing connected, so production cost is clear at month end.', mods: ['Accounting', 'Procurement', 'Inventory', 'HR & Payroll'], features: ['Combine raw materials and production costs', 'Calculate accurate cost per unit of finished goods', 'Track work in progress and production runs', 'Move finished goods into inventory automatically', 'Analyze production efficiency and profitability'] },
+  { tag: 'SECTOR 01', name: 'Manufacturing', sub: 'Plants, stores and production costs under one roof.', img: '/images/silos.jpg', desc: 'Keep raw materials, finished stock, wages and purchasing connected, so production cost is clear at month end.', mods: ['Accounting', 'Procurement', 'Inventory', 'Manufacturing', 'HR & Payroll'], features: ['Combine raw materials and production costs', 'Calculate accurate cost per unit of finished goods', 'Track work in progress and production runs', 'Move finished goods into inventory automatically', 'Analyze production efficiency and profitability'] },
   { tag: 'SECTOR 02', name: 'Fuel & Energy', sub: 'Stock, suppliers and site operations kept accountable.', img: '/images/fuel.jpg', desc: 'Track stock, suppliers and site activity with approvals and records that stand up to review.', mods: ['Accounting', 'Procurement', 'Inventory', 'Fuel Station'], features: ['Record sales for every shift', 'Track fuel stock per tank and nozzle', 'Monitor dipping and variance', 'Manage fuel deliveries and procurement', 'Connect fuel operations to accounting and inventory'] },
   { tag: 'SECTOR 03', name: 'Construction', sub: 'Materials, resources and project costs in step.', img: '/images/construction.jpg', desc: 'Tie materials, labour and spending to each project so you can track costs against progress while work is ongoing.', mods: ['Accounting', 'Procurement', 'Projects', 'HR & Payroll'], features: ['Define deliverables and milestones', 'Build and manage work breakdown structures', 'Manage subcontractors and site activities', 'Control material consumption during execution', 'Prepare payment claims and certificates', 'Manage budgets and cost overruns'] },
   { tag: 'SECTOR 04', name: 'Property Management', sub: 'Properties, staff and spending in one place.', img: '/images/property.jpg', desc: 'Track maintenance purchases, staff and running costs across your properties with clear records and approvals.', mods: ['Accounting', 'Procurement', 'HR & Payroll'] },
@@ -42,6 +43,7 @@ export const highlights = [
   { name: 'Accounting', image: '/images/modules/accounting.jpg', items: ['Ledgers and payments', 'Reports traced to source entries', 'Shared data with every other module'] },
   { name: 'Procurement', image: '/images/modules/procurement.jpg', items: ['Purchase requisitions and orders', 'Supplier records', 'Approval trail on every request'] },
   { name: 'Inventory', image: '/images/modules/inventory.jpg', items: ['Stock across stores and sites', 'Receipts and issues', 'Stock linked to projects'] },
+  { name: 'Manufacturing', image: '/images/modules/manufacturing.jpg', items: ['Raw materials and production costs combined', 'Cost per unit of finished goods', 'Work in progress and production runs'] },
   { name: 'HR & Payroll', image: '/images/modules/hr-meeting.jpg', items: ['Employee profiles and designations', 'Leave records per employee', 'Loan management for staff', 'Payroll from the same staff records'] },
   { name: 'POS', image: '/images/modules/pos-cashier.jpg', items: ['Sales counters for daily selling', 'Sales reports by product', 'Sales per salesperson'] },
   { name: 'Fuel Station', image: '/images/modules/fuel-station-sky.jpg', items: ['Pump sales and fuel stock', 'Tank dipping records and reports', 'Station activity tied to your accounts'] },
@@ -83,18 +85,18 @@ export const clients = [
 export const site = {
   title: 'ProsERP',
   url: 'https://proserp.co.tz',
-  description: 'One system for accounting, procurement, inventory, HR & payroll, POS, fuel station, projects and bio farming.',
+  description: 'One system for accounting, procurement, inventory, manufacturing, HR & payroll, POS, fuel station, projects and bio farming.',
   ctaLabel: 'Request a demo',
 };
 
 export const footer = {
-  blurb: 'One platform for accounting, procurement, inventory, HR & payroll, POS, fuel station, projects and bio farming.',
+  blurb: 'One platform for accounting, procurement, inventory, manufacturing, HR & payroll, POS, fuel station, projects and bio farming.',
   companyLinks: [
     { href: '/about', label: 'About' },
     { href: '/industries', label: 'Industries' },
     { href: '/contact', label: 'Contact' },
   ],
-  moduleNames: ['Accounting', 'Procurement', 'Inventory', 'HR & Payroll', 'POS', 'Fuel Station', 'Projects', 'Bio Farming'],
+  moduleNames: ['Accounting', 'Procurement', 'Inventory', 'Manufacturing', 'HR & Payroll', 'POS', 'Fuel Station', 'Projects', 'Bio Farming'],
   contact: ['info@prosafrica.com', '+255 746 917 817', 'Dar es Salaam, Tanzania'],
   copyright: '© ProsERP. All rights reserved.',
 };
@@ -103,12 +105,12 @@ export const home = {
   meta: {
     title: 'ProsERP | ERP for accounting, inventory & HR in Tanzania',
     description:
-      'ProsERP by ProsAfrica brings accounting, procurement, inventory, HR & payroll, POS, fuel station, projects and bio farming into one connected system for businesses in Tanzania.',
+      'ProsERP by ProsAfrica brings accounting, procurement, inventory, manufacturing, HR & payroll, POS, fuel station, projects and bio farming into one connected system for businesses in Tanzania.',
   },
   hero: {
     badge: 'ENTERPRISE RESOURCE PLANNING',
     title: 'One system to run every part of your business.',
-    lead: 'ProsERP brings accounting, procurement, inventory, HR & payroll, POS, fuel station, projects and bio farming into one platform, so your teams work from the same numbers.',
+    lead: 'ProsERP brings accounting, procurement, inventory, manufacturing, HR & payroll, POS, fuel station, projects and bio farming into one platform, so your teams work from the same numbers.',
     primaryCta: 'Request a demo',
     secondaryCta: 'See industries',
     image: { src: '/images/dashboard.webp', alt: 'ProsERP dashboard showing profit and loss and balance sheet trends' },
@@ -116,7 +118,7 @@ export const home = {
   clientsTitle: 'Trusted by a variety of businesses',
   modulesHeading: {
     eyebrow: 'The platform',
-    title: 'Everything your operation needs, in eight modules.',
+    title: 'Everything your operation needs, in nine modules.',
     text: 'Start with one, add the rest as you grow. Every module shares the same data.',
   },
   devices: {
@@ -213,7 +215,7 @@ export const industries = {
   meta: {
     title: 'ERP for manufacturing, fuel, construction and more',
     description:
-      'See how ProsERP supports manufacturing, fuel and energy, construction, property management, distribution and wholesale businesses, and which modules fit each one.',
+      'See how ProsERP supports manufacturing, fuel and energy, construction, property management, distribution and wholesale businesses.',
   },
   hero: {
     eyebrow: 'Industries',
