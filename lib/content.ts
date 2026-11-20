@@ -103,9 +103,9 @@ export const footer = {
 
 export const home = {
   meta: {
-    title: 'ProsERP | ERP for accounting, inventory & HR in Tanzania',
+    title: 'ProsERP | ERP software for every business',
     description:
-      'ProsERP by ProsAfrica brings accounting, procurement, inventory, manufacturing, HR & payroll, POS, fuel station, projects and bio farming into one connected system for businesses in Tanzania.',
+      'ProsERP by ProsAfrica brings accounting, procurement, inventory, manufacturing, HR & payroll, POS, fuel station, projects and bio farming into one connected system.',
   },
   hero: {
     badge: 'ENTERPRISE RESOURCE PLANNING',
