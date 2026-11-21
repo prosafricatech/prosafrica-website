@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 // STEP 5: floating chat widget. It sits above the WhatsApp button on every page.
-// STEP 5b: replies come from /api/chat (see getReply below). No conversation history yet (step 6).
+// STEP 5b: replies come from /api/chat (see getReply below). STEP 6a: the whole conversation is sent each time.
 
 type Msg = { role: 'user' | 'assistant'; content: string };
 
@@ -16,11 +16,11 @@ const WELCOME: Msg = {
 
 // The ONLY place that knows where replies come from: our own server route, never Anthropic directly.
 // (The API key lives on the server; the browser only ever talks to /api/chat.)
-async function getReply(message: string): Promise<string> {
+async function getReply(history: Msg[]): Promise<string> {
   const res = await fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message }),
+    body: JSON.stringify({ messages: history }),
   });
   const data = await res.json().catch(() => null);
   if (!res.ok || typeof data?.reply !== 'string') throw new Error(data?.error || 'Request failed');
@@ -48,11 +48,13 @@ export default function ChatWidget() {
   async function send() {
     const text = input.trim();
     if (!text || sending) return;
-    setMessages((m) => [...m, { role: 'user', content: text }]);
+    const next: Msg[] = [...messages, { role: 'user', content: text }];
+    setMessages(next);
     setInput('');
     setSending(true);
     try {
-      const reply = await getReply(text);
+      // The welcome line is only for display; the conversation Claude sees starts with the visitor.
+      const reply = await getReply(next.filter((m) => m !== WELCOME));
       setMessages((m) => [...m, { role: 'assistant', content: reply }]);
     } catch {
       setMessages((m) => [...m, { role: 'assistant', content: 'Sorry, something went wrong. Please try again.' }]);
