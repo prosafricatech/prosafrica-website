@@ -746,10 +746,6 @@
     margin-bottom: calc(var(--spacing) * 5);
   }
 
-  .mb-6 {
-    margin-bottom: calc(var(--spacing) * 6);
-  }
-
   .mb-7 {
     margin-bottom: calc(var(--spacing) * 7);
   }
@@ -804,11 +800,6 @@
 
   .aspect-square {
     aspect-ratio: 1;
-  }
-
-  .size-3 {
-    width: calc(var(--spacing) * 3);
-    height: calc(var(--spacing) * 3);
   }
 
   .size-5 {
@@ -962,10 +953,6 @@
     width: 40%;
   }
 
-  .w-3 {
-    width: calc(var(--spacing) * 3);
-  }
-
   .w-7 {
     width: calc(var(--spacing) * 7);
   }
@@ -1102,10 +1089,6 @@
     min-width: 0;
   }
 
-  .min-w-190 {
-    min-width: calc(var(--spacing) * 190);
-  }
-
   .flex-1 {
     flex: 1;
   }
@@ -1136,10 +1119,6 @@
 
   .shrink-0 {
     flex-shrink: 0;
-  }
-
-  .border-collapse {
-    border-collapse: collapse;
   }
 
   .origin-bottom-right {
@@ -1420,10 +1399,6 @@
     overflow: visible;
   }
 
-  .overflow-x-auto {
-    overflow-x: auto;
-  }
-
   .overflow-y-auto {
     overflow-y: auto;
   }
@@ -1677,10 +1652,6 @@
 
   .bg-alt {
     background-color: var(--color-alt);
-  }
-
-  .bg-border {
-    background-color: var(--color-border);
   }
 
   .bg-emerald-50 {
@@ -2304,10 +2275,6 @@
     padding-bottom: calc(var(--spacing) * 24);
   }
 
-  .pl-12 {
-    padding-left: calc(var(--spacing) * 12);
-  }
-
   .pl-16 {
     padding-left: calc(var(--spacing) * 16);
   }
@@ -2601,16 +2568,6 @@
   @supports (color: color-mix(in lab, red, red)) {
     .text-white\/45 {
       color: color-mix(in oklab, var(--color-white) 45%, transparent);
-    }
-  }
-
-  .text-white\/60 {
-    color: #fff9;
-  }
-
-  @supports (color: color-mix(in lab, red, red)) {
-    .text-white\/60 {
-      color: color-mix(in oklab, var(--color-white) 60%, transparent);
     }
   }
 
@@ -3117,11 +3074,6 @@
     border-top-width: 1px;
   }
 
-  .last\:border-0:last-child {
-    border-style: var(--tw-border-style);
-    border-width: 0;
-  }
-
   @media (hover: hover) {
     .hover\:-translate-y-1\.5:hover {
       --tw-translate-y: calc(var(--spacing) * -1.5);
@@ -3264,10 +3216,6 @@
   @media not (min-width: 900px) {
     .max-md\:bottom-\[10vw\] {
       bottom: 10vw;
-    }
-
-    .max-md\:bottom-\[calc\(107vw\*0\.1\)\] {
-      bottom: 10.7vw;
     }
 
     .max-md\:hidden {
@@ -3444,10 +3392,6 @@
 
     .md\:grid-cols-3 {
       grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .md\:grid-cols-4 {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
     .md\:grid-cols-\[1fr_1fr\] {
