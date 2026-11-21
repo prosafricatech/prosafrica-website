@@ -4,6 +4,7 @@ import './globals.css';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import ChatWidget from '@/components/ChatWidget';
 import { site } from '@/lib/content';
 
 const font = Plus_Jakarta_Sans({
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main>{children}</main>
         <Footer />
         <WhatsAppButton />
+        <ChatWidget />
       </body>
     </html>
   );
