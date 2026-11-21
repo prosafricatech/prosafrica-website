@@ -11,8 +11,8 @@ import LaptopHero from '@/components/LaptopHero';
 import HeroBackground from '@/components/HeroBackground';
 import ClientLogos from '@/components/ClientLogos';
 import ModuleCard from '@/components/ModuleCard';
-import ModuleShowcase from '@/components/ModuleShowcase';
 import IndustryCard from '@/components/IndustryCard';
+import DevicesSection from '@/components/DevicesSection';
 import StepItem from '@/components/StepItem';
 import FaqItem from '@/components/FaqItem';
 import CtaBand from '@/components/CtaBand';
@@ -33,8 +33,8 @@ export default function Home() {
         </div>
         */}
         {/* CURRENT HERO BACKGROUND: image */}
-        {/* the gradient runs down behind the laptop and fades out softly (laptop height = 56.25vw on desktop, 107vw on phones) */}
-        <div className="absolute inset-x-0 top-0 bottom-[calc(56.25vw*0.1)] overflow-hidden [mask-image:linear-gradient(to_bottom,#000_62%,transparent_100%)] max-md:bottom-[calc(107vw*0.1)]">
+        {/* the gradient runs down behind the laptop and fades out softly (laptop height = 56.25vw on desktop; cropped phone image is about 98vw tall, so 10vw on phones) */}
+        <div className="absolute inset-x-0 top-0 bottom-[calc(56.25vw*0.1)] overflow-hidden [mask-image:linear-gradient(to_bottom,#000_62%,transparent_100%)] max-md:bottom-[10vw]">
           <Image src="/images/hero-bg.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
         </div>
         <Container className="relative z-10 px-5 pt-32 pb-4 md:px-10 md:pt-40">
@@ -64,32 +64,24 @@ export default function Home() {
           </div>
           */}
         </Container>
-        <LaptopHero src="/images/hero-laptop-v5.webp" alt={home.hero.image.alt} />
+        <LaptopHero src="/images/hero-laptop-v5.webp" mobileSrc="/images/hero-phone-v1.webp" alt={home.hero.image.alt} />
       </section>
       {/* ===== END: HERO (headline, buttons, laptop image) ===== */}
 
       {/* ===== SECTION: CLIENT LOGOS ===== */}
       <ClientLogos title={home.clientsTitle} clients={clients} />
 
-      {/* ===== START: MODULES OVERVIEW (8 module cards) ===== */}
-      <Section>
-        <SplitHeading title={home.modulesHeading.title} text={home.modulesHeading.text} />
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4">
-          {modules.map((m) => (
-            <ModuleCard key={m.n} {...m} />
-          ))}
-        </div>
-      </Section>
-      {/* ===== END: MODULES OVERVIEW (8 module cards) ===== */}
-
-      {/* ===== START: INSIDE THE MODULES (tabbed showcase) ===== */}
+      {/* ===== START: MODULES (8 cards: photo, description, what it covers, learn more) ===== */}
       <Section tone="alt">
-        <SplitHeading title={home.highlightsHeading.title} text={home.highlightsHeading.text} />
-        <div className="mt-12 md:mt-16">
-          <ModuleShowcase items={highlights.map((h) => ({ ...h, desc: modules.find((m) => m.name === h.name)?.desc }))} />
+        <SplitHeading title={home.modulesHeading.title} text={home.modulesHeading.text} />
+        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {modules.map((m) => {
+            const h = highlights.find((x) => x.name === m.name);
+            return <ModuleCard key={m.n} name={m.name} desc={m.desc} items={h?.items ?? []} image={h?.image} />;
+          })}
         </div>
       </Section>
-      {/* ===== END: INSIDE THE MODULES (tabbed showcase) ===== */}
+      {/* ===== END: MODULES (8 cards: photo, description, what it covers, learn more) ===== */}
 
       {/* ===== START: INDUSTRIES (sector cards) ===== */}
       <Section>
@@ -108,6 +100,10 @@ export default function Home() {
         </div>
       </Section>
       {/* ===== END: INDUSTRIES (sector cards) ===== */}
+
+      {/* ===== START: DEVICES (choose where you work from: laptop + phone) ===== */}
+      <DevicesSection laptopSrc="/images/hero-laptop-v5.webp" phoneSrc="/images/hero-phone-v1.webp" />
+      {/* ===== END: DEVICES (choose where you work from: laptop + phone) ===== */}
 
       {/* ===== START: WORKING TOGETHER (photo + points) ===== */}
       <Panel tone="alt" className="[&>div]:flex [&>div]:flex-wrap [&>div]:items-center [&>div]:gap-16">

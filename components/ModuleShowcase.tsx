@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { moduleIcons } from './icons';
 
 export type ShowcaseItem = {
   name: string;
@@ -37,6 +38,7 @@ export default function ModuleShowcase({ items, onDark = false }: { items: Showc
       <ul className={cn('border-b md:order-1', onDark ? 'border-white/25' : 'border-navy/15')}>
         {items.map((m, i) => {
           const isActive = i === active;
+          const Icon = moduleIcons[m.name];
           return (
             <li key={m.name} className={cn('border-t', onDark ? 'border-white/25' : 'border-navy/15')}>
               <button
@@ -46,9 +48,19 @@ export default function ModuleShowcase({ items, onDark = false }: { items: Showc
                 onMouseEnter={() => setActive(i)}
                 onFocus={() => setActive(i)}
                 onClick={() => setActive(i)}
-                className="flex w-full items-baseline gap-5 py-6 text-left"
+                className="flex w-full items-center gap-5 py-5 text-left"
               >
-                <span className={cn('w-7 text-sm font-medium tabular-nums', onDark ? 'text-white/60' : 'text-muted')}>{String(i + 1).padStart(2, '0')}</span>
+                <span
+                  aria-hidden
+                  className={cn(
+                    'flex size-11 shrink-0 items-center justify-center rounded-[14px] border-2 border-dashed transition-colors duration-300 [&>svg]:size-5',
+                    isActive
+                      ? onDark ? 'border-white text-white' : 'border-indigo bg-white text-indigo'
+                      : onDark ? 'border-white/30 text-white/45' : 'border-navy/20 bg-white text-navy/35'
+                  )}
+                >
+                  {Icon && <Icon />}
+                </span>
                 <span
                   className={cn(
                     'text-[28px] leading-tight font-semibold tracking-[-0.8px] transition-colors duration-300 md:text-[34px]',
@@ -66,7 +78,7 @@ export default function ModuleShowcase({ items, onDark = false }: { items: Showc
                 )}
               >
                 <div className="overflow-hidden">
-                  <div className="pb-7 pl-12">
+                  <div className="pb-7 pl-16">
                     {m.desc && <p className={cn('max-w-md text-[16px] leading-[1.7]', onDark ? 'text-white/80' : 'text-body')}>{m.desc}</p>}
                     <ul className="mt-4 flex flex-col gap-1.5">
                       {m.items.map((it) => (

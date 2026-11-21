@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
 
 export function sectorSlug(name: string) {
   return name.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -11,7 +10,6 @@ export default function SectorRow({
   name,
   sub,
   desc,
-  mods,
   features = [],
   img,
 }: {
@@ -19,7 +17,6 @@ export default function SectorRow({
   name: string;
   sub: string;
   desc: string;
-  mods: string[];
   features?: string[];
   img: string;
 }) {
@@ -31,15 +28,15 @@ export default function SectorRow({
         <span className="absolute bottom-5 left-6 text-[13px] font-bold tracking-[1.5px] text-white/90 md:bottom-7 md:left-8">{n}</span>
       </div>
 
-      <div className="mt-8 grid gap-x-12 gap-y-8 md:grid-cols-[1fr_1fr]">
+      <div className={features.length > 0 ? 'mt-8 grid gap-x-12 gap-y-8 md:grid-cols-[1fr_1fr]' : 'mt-8 max-w-2xl'}>
         <div>
           <h2 className="text-[34px] leading-[1.08] font-extrabold tracking-[-1.6px] text-navy md:text-[42px]">{name}</h2>
           <p className="mt-2 text-[16px] font-semibold text-indigo">{sub}</p>
           <p className="mt-5 text-[17px] leading-[1.7] font-medium text-body">{desc}</p>
         </div>
-        <div>
-          <div className="text-xs font-bold tracking-[1.5px] text-muted uppercase">{features.length ? 'What you can do' : 'Modules used'}</div>
-          {features.length > 0 ? (
+        {features.length > 0 && (
+          <div>
+            <div className="text-xs font-bold tracking-[1.5px] text-muted uppercase">What you can do</div>
             <ul className="mt-4 flex flex-col">
               {features.map((f) => (
                 <li key={f} className="flex items-start gap-3 border-b border-border/70 py-3 text-[15.5px] leading-normal font-medium text-ink first:border-t">
@@ -48,15 +45,8 @@ export default function SectorRow({
                 </li>
               ))}
             </ul>
-          ) : null}
-          <div className={cn('flex flex-wrap gap-2.5', features.length ? 'mt-6' : 'mt-4')}>
-            {mods.map((m) => (
-              <span key={m} className="rounded-full bg-tint px-3.5 py-2 text-[13px] font-bold text-indigo">
-                {m}
-              </span>
-            ))}
           </div>
-        </div>
+        )}
       </div>
     </article>
   );
