@@ -4,11 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 // STEP 5: floating chat widget. It sits above the WhatsApp button on every page.
-// STEP 5b: replies come from /api/chat (see getReply below). STEP 6a: the whole conversation is sent each time.
+// STEP 5b: replies come from /api/chat (see getReply below). STEP 6a: the whole conversation is sent each time. STEP 6b: answers stream in piece by piece.
 
 type Msg = { role: 'user' | 'assistant'; content: string };
 
 const MAX_LEN = 500;
+const MAX_HISTORY = 10; // matches what the server keeps
 const WELCOME: Msg = {
   role: 'assistant',
   content: 'Hi! Ask me anything about ProsERP: its modules, the industries it serves, or how to get started.',
@@ -16,15 +17,31 @@ const WELCOME: Msg = {
 
 // The ONLY place that knows where replies come from: our own server route, never Anthropic directly.
 // (The API key lives on the server; the browser only ever talks to /api/chat.)
-async function getReply(history: Msg[]): Promise<string> {
+// The answer arrives in small pieces; onText is called with the full text so far each time a piece lands.
+async function getReply(history: Msg[], onText: (textSoFar: string) => void): Promise<void> {
   const res = await fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ messages: history }),
   });
-  const data = await res.json().catch(() => null);
-  if (!res.ok || typeof data?.reply !== 'string') throw new Error(data?.error || 'Request failed');
-  return data.reply;
+
+  // Errors found before streaming starts arrive as JSON with a status code.
+  if (res.status === 429) throw new Error('RATE_LIMITED');
+  if (!res.ok || !res.body) {
+    const data = await res.json().catch(() => null);
+    throw new Error(data?.error || 'Request failed');
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let text = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    text += decoder.decode(value, { stream: true });
+    onText(text);
+  }
+  if (!text) throw new Error('Empty reply');
 }
 
 export default function ChatWidget() {
@@ -52,12 +69,24 @@ export default function ChatWidget() {
     setMessages(next);
     setInput('');
     setSending(true);
+    let started = false;
     try {
       // The welcome line is only for display; the conversation Claude sees starts with the visitor.
-      const reply = await getReply(next.filter((m) => m !== WELCOME));
-      setMessages((m) => [...m, { role: 'assistant', content: reply }]);
-    } catch {
-      setMessages((m) => [...m, { role: 'assistant', content: 'Sorry, something went wrong. Please try again.' }]);
+      await getReply(next.filter((m) => m !== WELCOME).slice(-MAX_HISTORY), (soFar) => {
+        const first = !started;
+        started = true;
+        // the first piece adds the assistant bubble; every later piece rewrites it with the longer text
+        setMessages((m) => (first ? [...m, { role: 'assistant', content: soFar }] : [...m.slice(0, -1), { role: 'assistant', content: soFar }]));
+      });
+    } catch (err) {
+      // If part of the answer already arrived, keep it. Only show an error when nothing came through.
+      if (!started) {
+        const limited = err instanceof Error && err.message === 'RATE_LIMITED';
+        const content = limited
+          ? 'You have sent a lot of messages. Please try again in a little while, or use our Contact page to reach the team.'
+          : 'Sorry, something went wrong. Please try again.';
+        setMessages((m) => [...m, { role: 'assistant', content }]);
+      }
     } finally {
       setSending(false);
     }
@@ -107,7 +136,7 @@ export default function ChatWidget() {
                 {m.content}
               </div>
             ))}
-            {sending && <div className="self-start rounded-2xl bg-white px-4 py-2.5 text-[15px] text-muted">Typing…</div>}
+            {sending && messages[messages.length - 1]?.role === 'user' && <div className="self-start rounded-2xl bg-white px-4 py-2.5 text-[15px] text-muted">Typing…</div>}
           </div>
 
           <form
