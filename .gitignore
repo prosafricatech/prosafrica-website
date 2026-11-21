@@ -6,3 +6,6 @@
 .env.example
 
 EMAIL_IMPLEMENTATION.md
+
+# Next.js build output
+/.next

@@ -1,3 +1,0 @@
-{"timestamp":"00:00:01.154","source":"Server","level":"LOG","message":""}
-{"timestamp":"00:00:07.470","source":"Browser","level":"INFO","message":"Download the React DevTools for a better development experience: https://react.dev/link/react-devtools"}
-{"timestamp":"00:00:15.553","source":"Server","level":"ERROR","message":"Chat: Claude request failed BadRequestError: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011ChAW7rPVstepQdxtMeL9W\"}"}

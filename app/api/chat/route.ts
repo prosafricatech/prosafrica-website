@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
+import { buildSystemPrompt } from '@/lib/assistant-knowledge';
 
 export const runtime = 'nodejs';
 
 // The SDK reads ANTHROPIC_API_KEY from the environment by itself.
 const client = new Anthropic();
 
-// STEP 2 (hello Claude): one message in, one reply out. No knowledge, no history yet.
+// STEP 3: one message in, one reply out, now with site knowledge in the system prompt. No history yet.
 export async function POST(req: Request) {
   let body: { message?: unknown };
   try {
@@ -24,6 +25,7 @@ export async function POST(req: Request) {
     const response = await client.messages.create({
       model: process.env.ANTHROPIC_MODEL || 'claude-sonnet-5-5',
       max_tokens: 500,
+      system: buildSystemPrompt(),
       messages: [{ role: 'user', content: message }],
     });
 
